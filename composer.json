@@ -1,0 +1,29 @@
+{
+    "name": "fredyns/yii2-suites",
+    "description": "my very own signature of code",
+    "type": "yii2-extension",
+    "keywords": [
+        "yii2",
+        "extension",
+        "lbac",
+        "access control",
+        "narcisme"
+    ],
+    "license": "WTF-PL",
+    "authors": [
+        {
+            "name": "Fredy Nurman Saleh",
+            "email": "email@fredyns.net"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "kartik-v/yii2-icons": "^1.4",
+        "cornernote/yii2-returnurl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "fredyns\\suites\\": "sourcecode"
+        }
+    }
+}
