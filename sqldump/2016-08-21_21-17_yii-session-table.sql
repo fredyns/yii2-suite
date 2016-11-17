@@ -1,3 +1,9 @@
+--
+-- `yii_session`
+-- used to store application session
+--
+-- execute this at initial configuration
+--
 
 --
 -- Table structure for table `yii_session`

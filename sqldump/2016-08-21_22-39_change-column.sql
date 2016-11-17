@@ -1,32 +1,24 @@
--- MySQL Workbench Synchronization
--- Generated: 2016-08-21 22:38
--- Model: New Model
--- Version: 1.0
--- Project: Name of the project
+-- unsigned integer to double primary key/value range
+-- also for integer column type consistency
+--
+-- execute this after installing dektrium/user & execute migration
+--
 -- Author: Fredy
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
-ALTER TABLE `yii2playground`.`profile` 
+ALTER TABLE `profile` 
 CHANGE COLUMN `user_id` `user_id` INT(10) UNSIGNED NOT NULL ;
 
-ALTER TABLE `yii2playground`.`social_account` 
+ALTER TABLE `social_account` 
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
 CHANGE COLUMN `user_id` `user_id` INT(10) UNSIGNED NULL DEFAULT NULL ,
 CHANGE COLUMN `created_at` `created_at` INT(10) UNSIGNED NULL DEFAULT NULL ;
 
-ALTER TABLE `yii2playground`.`token` 
+ALTER TABLE `token` 
 CHANGE COLUMN `user_id` `user_id` INT(10) UNSIGNED NOT NULL ,
 CHANGE COLUMN `created_at` `created_at` INT(10) UNSIGNED NOT NULL ;
 
-ALTER TABLE `yii2playground`.`user` 
+ALTER TABLE `user` 
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
 CHANGE COLUMN `created_at` `created_at` INT(10) UNSIGNED NOT NULL ,
 CHANGE COLUMN `updated_at` `updated_at` INT(10) UNSIGNED NOT NULL ;
 
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
