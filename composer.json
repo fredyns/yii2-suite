@@ -18,8 +18,15 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
+        "cornernote/yii2-returnurl": "*",
+        "dektrium/yii2-user": "0.9.*@dev",
+        "dmstr/yii2-adminlte-asset": "^2.3",
+        "kartik-v/yii2-grid": "^3.1",
         "kartik-v/yii2-icons": "^1.4",
-        "cornernote/yii2-returnurl": "*"
+        "kartik-v/yii2-mpdf": "^1.0",
+        "kartik-v/yii2-widgets": "^3.4",
+        "mdmsoft/yii2-upload-file": "dev-master",
+        "schmunk42/yii2-giiant": "@dev"
     },
     "autoload": {
         "psr-4": {
