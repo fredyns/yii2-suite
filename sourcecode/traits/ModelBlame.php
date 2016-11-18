@@ -2,6 +2,9 @@
 
 namespace fredyns\suites\traits;
 
+use fredyns\suites\models\User;
+use fredyns\suites\models\Profile;
+
 /**
  * Add blaming for model
  *
@@ -17,6 +20,11 @@ namespace fredyns\suites\traits;
 trait ModelBlame
 {
 
+    /**
+     * find yii user account model
+     *
+     * @return string
+     */
     public function yiiModelUser()
     {
         $alternatives = [
@@ -37,6 +45,11 @@ trait ModelBlame
         return null;
     }
 
+    /**
+     * decide User model class
+     *
+     * @return string
+     */
     public function modelUser()
     {
         $dektriumUserClass = 'dektrium\user\models\User';
@@ -48,13 +61,16 @@ trait ModelBlame
             {
                 return $yiiUserClass;
             }
-
-            return $dektriumUserClass;
         }
 
-        return $yiiUserClass;
+        return User::className();
     }
 
+    /**
+     * find yii profile model
+     *
+     * @return string
+     */
     public function yiiModelProfile()
     {
         $alternatives = [
@@ -75,6 +91,11 @@ trait ModelBlame
         return null;
     }
 
+    /**
+     * decide Profile model class
+     *
+     * @return string
+     */
     public function modelProfile()
     {
         $dektriumProfileClass = 'dektrium\user\models\Profile';
@@ -86,18 +107,16 @@ trait ModelBlame
             {
                 return $yiiProfileClass;
             }
-
-            return $dektriumProfileClass;
         }
 
-        return $yiiProfileClass;
+        return Profile::className();
     }
     /* ======================== global blaming ======================== */
 
     /**
      * Getting blamable user model based on particular attribute
      *
-     * @return \yii\db\ActiveQuery
+     * @return User
      */
     public function getBlamedUser($attribute)
     {
@@ -114,7 +133,7 @@ trait ModelBlame
     /**
      * Getting blamable profile model based on particular attribute
      *
-     * @return \yii\db\ActiveQuery
+     * @return Profile
      */
     public function getBlamedProfile($attribute)
     {
@@ -132,7 +151,7 @@ trait ModelBlame
     /**
      * Getting blamable Profile model based for creating model
      *
-     * @return \yii\db\ActiveQuery
+     * @return Profile
      */
     public function getCreatedBy()
     {
@@ -142,7 +161,7 @@ trait ModelBlame
     /**
      * Getting blamable Profile model based for updating model
      *
-     * @return \yii\db\ActiveQuery
+     * @return Profile
      */
     public function getUpdatedBy()
     {
@@ -152,7 +171,7 @@ trait ModelBlame
     /**
      * Getting blamable Profile model based for deleting model
      *
-     * @return \yii\db\ActiveQuery
+     * @return Profile
      */
     public function getDeletedBy()
     {
@@ -162,7 +181,7 @@ trait ModelBlame
     /**
      * Getting blamable Profile model based for creating model
      *
-     * @return \yii\db\ActiveQuery
+     * @return Profile
      */
     public function getCreatedByProfile()
     {
@@ -172,7 +191,7 @@ trait ModelBlame
     /**
      * Getting blamable Profile model based for updating model
      *
-     * @return \yii\db\ActiveQuery
+     * @return Profile
      */
     public function getUpdatedByProfile()
     {
@@ -182,7 +201,7 @@ trait ModelBlame
     /**
      * Getting blamable Profile model based for deleting model
      *
-     * @return \yii\db\ActiveQuery
+     * @return Profile
      */
     public function getDeletedByProfile()
     {
@@ -192,7 +211,7 @@ trait ModelBlame
     /**
      * Getting blamable User model based for creating model
      *
-     * @return \yii\db\ActiveQuery
+     * @return User
      */
     public function getCreatedByUser()
     {
@@ -202,7 +221,7 @@ trait ModelBlame
     /**
      * Getting blamable User model based for updating model
      *
-     * @return \yii\db\ActiveQuery
+     * @return User
      */
     public function getUpdatedByUser()
     {
@@ -212,7 +231,7 @@ trait ModelBlame
     /**
      * Getting blamable User model based for deleting model
      *
-     * @return \yii\db\ActiveQuery
+     * @return User
      */
     public function getDeletedByUser()
     {
