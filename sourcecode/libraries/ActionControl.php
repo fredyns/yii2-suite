@@ -39,6 +39,9 @@ use kartik\icons\Icon;
  */
 class ActionControl extends \yii\base\Object
 {
+    /**
+     * menu divider in dropdown menu
+     */
     const MENU_DIVIDER = '<li role="presentation" class="divider"></li>';
 
     /**
@@ -56,11 +59,24 @@ class ActionControl extends \yii\base\Object
      */
     public $errors = [];
 
+    /**
+     * add new error message
+     *
+     * @param string $name
+     * @param string $message
+     */
     public function addError($name, $message)
     {
         $this->errors[$name][] = $message;
     }
 
+    /**
+     * get error messages for spesific key
+     *
+     * @param string $name
+     * @param bool $asString
+     * @return array|string
+     */
     public function getError($name, $asString = false)
     {
         $msg = ArrayHelper::getValue($this->errors, $name, []);
@@ -73,11 +89,24 @@ class ActionControl extends \yii\base\Object
         return $msg;
     }
 
+    /**
+     * check whether there is any error
+     *
+     * @param string $name
+     * @return bool
+     */
     public function isError($name)
     {
         return (bool) $this->getError($name);
     }
 
+    /**
+     * throw error messages
+     *
+     * @param string $name
+     * @param integer $code
+     * @return UserException|NotFoundHttpException|ForbiddenHttpException
+     */
     public function exception($name, $code = null)
     {
         $message = $this->getError($name, TRUE);
@@ -148,7 +177,12 @@ class ActionControl extends \yii\base\Object
     public function getAllowDeleted()
     {
         $this->addError('deleted', "Deleted model page is not configured properly.");
-        // default false karna tidak semua support
+
+        /**
+         * default to be false.
+         * because not all models support soft-delete
+         * must be configured independently
+         */
         return FALSE;
     }
 
@@ -307,6 +341,11 @@ class ActionControl extends \yii\base\Object
         return $action;
     }
 
+    /**
+     * get key-parameters
+     *
+     * @return array
+     */
     public function modelParam()
     {
         if ($this->model instanceof ActiveRecord)
@@ -317,6 +356,12 @@ class ActionControl extends \yii\base\Object
         return [];
     }
 
+    /**
+     * get URL param for action
+     *
+     * @param string $name
+     * @return array
+     */
     public function url($name)
     {
         $function = 'getUrl'.ucfirst($name);
@@ -331,6 +376,11 @@ class ActionControl extends \yii\base\Object
         }
     }
 
+    /**
+     * get URL param for index page
+     *
+     * @return array
+     */
     public function getUrlIndex()
     {
         return [
@@ -339,6 +389,11 @@ class ActionControl extends \yii\base\Object
         ];
     }
 
+    /**
+     * get URL param for deleted page
+     *
+     * @return array
+     */
     public function getUrlDeleted()
     {
         return [
@@ -347,6 +402,11 @@ class ActionControl extends \yii\base\Object
         ];
     }
 
+    /**
+     * get URL param for create action
+     *
+     * @return array
+     */
     public function getUrlCreate()
     {
         return [
@@ -355,6 +415,11 @@ class ActionControl extends \yii\base\Object
         ];
     }
 
+    /**
+     * get URL param for view action
+     *
+     * @return array
+     */
     public function getUrlView()
     {
         if ($this->model instanceof ActiveRecord)
@@ -369,6 +434,11 @@ class ActionControl extends \yii\base\Object
         return [];
     }
 
+    /**
+     * get URL param for update action
+     *
+     * @return array
+     */
     public function getUrlUpdate()
     {
         if ($this->model instanceof ActiveRecord)
@@ -383,6 +453,11 @@ class ActionControl extends \yii\base\Object
         return [];
     }
 
+    /**
+     * get URL param for delete action
+     *
+     * @return array
+     */
     public function getUrlDelete()
     {
         if ($this->model instanceof ActiveRecord)
@@ -397,6 +472,11 @@ class ActionControl extends \yii\base\Object
         return [];
     }
 
+    /**
+     * get URL param for restore action
+     *
+     * @return array
+     */
     public function getUrlRestore()
     {
         if ($this->model instanceof ActiveRecord)
