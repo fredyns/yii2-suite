@@ -3,6 +3,7 @@
 namespace fredyns\suites\libraries;
 
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -805,7 +806,12 @@ class ActionControl extends \yii\base\Object
         {
             if ($this->model->hasAttribute($attribute))
             {
-                return $this->model->getAttribute($attribute);
+                $label = $this->model->getAttribute($attribute);
+
+                if ($label)
+                {
+                    return $label;
+                }
             }
         }
 
@@ -820,12 +826,16 @@ class ActionControl extends \yii\base\Object
      */
     public function getLinkTo($options = [])
     {
-        if (is_string($options))
+        if (is_scalar($options))
         {
             $options = ['label' => $options];
         }
+        elseif (is_array($options) == FALSE)
+        {
+            throw new InvalidConfigException("Invalid getLinkTo() parameter.");
+        }
 
-        $options = ArrayHelper::merge($options, ['label' => $this->modelLabel()]);
+        $options = ArrayHelper::merge(['label' => $this->modelLabel()], $options);
 
         if ($this->allow('view'))
         {
