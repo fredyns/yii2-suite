@@ -1,11 +1,11 @@
 <?php
 
-namespace fredyns\lbac;
+namespace fredyns\suites\widgets;
 
 use yii\helpers\ArrayHelper;
 
 /**
- * Description of DetailView
+ * extend DetailView allowing to utilize axtion control for saveral function
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */

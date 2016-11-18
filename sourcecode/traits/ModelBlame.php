@@ -1,16 +1,16 @@
 <?php
 
-namespace fredyns\components\traits;
+namespace fredyns\suites\traits;
 
 /**
  * Add blaming for model
  *
- * @property app\models\User $createdByUser
- * @property app\models\User $updatedByUser
- * @property app\models\User $deletedByUser
- * @property app\models\Profile $createdByProfile
- * @property app\models\Profile $updatedByProfile
- * @property app\models\Profile $deletedByProfile
+ * @property fredyns\suites\models\User $createdByUser
+ * @property fredyns\suites\models\User $updatedByUser
+ * @property fredyns\suites\models\User $deletedByUser
+ * @property fredyns\suites\models\Profile $createdByProfile
+ * @property fredyns\suites\models\Profile $updatedByProfile
+ * @property fredyns\suites\models\Profile $deletedByProfile
  *
  * @author fredy
  */

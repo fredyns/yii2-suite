@@ -1,12 +1,12 @@
 <?php
 
-namespace fredyns\lbac;
+namespace fredyns\suites\widgets;
 
 use yii\helpers\ArrayHelper;
 
 /**
- * Description of BlamingDetail
- *
+ * Generate blamable profile & timestamp in DetailView
+ * 
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
 class BlamingDetail extends \yii\base\Widget

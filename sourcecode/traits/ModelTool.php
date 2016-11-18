@@ -1,8 +1,7 @@
 <?php
 
-namespace fredyns\components\traits;
+namespace fredyns\suites\traits;
 
-use Yii;
 use yii\helpers\ArrayHelper;
 
 /**

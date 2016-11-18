@@ -1,16 +1,11 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-namespace fredyns\lbac;
+namespace fredyns\suites\widgets;
 
 use yii\helpers\ArrayHelper;
 
 /**
- * Description of LinkedDetail
+ * Generate link in DetailView regarding it's Action control
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */

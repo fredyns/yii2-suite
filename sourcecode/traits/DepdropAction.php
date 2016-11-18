@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\components\traits;
+namespace fredyns\suites\traits;
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;

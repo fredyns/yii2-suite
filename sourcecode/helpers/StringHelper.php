@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\components\helpers;
+namespace fredyns\suites\helpers;
 
 /**
  * some input filter

@@ -1,12 +1,6 @@
 <?php
-/**
- * @link      http://www.yiiframework.com/
- *
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license   http://www.yiiframework.com/license/
- */
 
-namespace fredyns\giiantTemplate\crud;
+namespace fredyns\suites\giiant\crud;
 
 use Yii;
 use yii\gii\CodeFile;
@@ -16,9 +10,9 @@ use yii\helpers\StringHelper;
 use schmunk42\giiant\helpers\SaveForm;
 
 /**
- * This generator generates an extended version of CRUDs.
+ * This generator generates an extended version of Giiant CRUDs.
  *
- * @author Tobais Munk <schmunk@usrbin.de>
+ * @author Fredy Nurman Saleh <email@fredyns.net>
  *
  * @since 1.0
  */

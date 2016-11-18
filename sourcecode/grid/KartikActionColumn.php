@@ -1,16 +1,12 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-namespace fredyns\lbac;
+namespace fredyns\suites\grid;
 
 use Yii;
 
 /**
- * Description of KartikActionColumn
+ * Action Column Generator for Kartik-grid
+ * Display Action button regarding model action control
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
@@ -41,7 +37,7 @@ class KartikActionColumn extends \kartik\grid\ActionColumn
      *
      * @var string
      */
-    public $actionControl = 'fredyns\lbac\ActionControl';
+    public $actionControl = 'fredyns\suites\libraries\ActionControl';
 
     /**
      * configuration for ActionMenu widget

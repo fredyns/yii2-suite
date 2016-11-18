@@ -1,9 +1,10 @@
 <?php
 
-namespace fredyns\lbac;
+namespace fredyns\suites\grid;
 
 /**
- * Description of YiiActionColumn
+ * Action Column Generator for Yii-grid
+ * Display Action button regarding model action control
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
@@ -24,7 +25,7 @@ class YiiActionColumn extends \yii\grid\ActionColumn
      *
      * @var string
      */
-    public $actionControl = 'fredyns\lbac\ActionControl';
+    public $actionControl = 'fredyns\suites\libraries\ActionControl';
 
     /**
      * configuration for ActionMenu widget

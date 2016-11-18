@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\lbac;
+namespace fredyns\suites\libraries;
 
 use Yii;
 use yii\db\ActiveRecord;

@@ -1,17 +1,13 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-namespace fredyns\lbac;
+namespace fredyns\suites\grid;
 
 use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
- * Description of KartikActionColumn
+ * Generate link to view detailed data model for Kartik-Grid
+ *
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
@@ -27,7 +23,7 @@ class KartikViewColumn extends \kartik\grid\DataColumn
      *
      * @var string
      */
-    public $actionControl = 'fredyns\lbac\ActionControl';
+    public $actionControl = 'fredyns\suites\libraries\ActionControl';
 
     /**
      * @inheritdoc

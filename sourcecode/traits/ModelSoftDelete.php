@@ -1,9 +1,8 @@
 <?php
 
-namespace fredyns\components\traits;
+namespace fredyns\suites\traits;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 
 /**
  * adding soft delete functionality
