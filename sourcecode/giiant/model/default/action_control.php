@@ -43,7 +43,7 @@ use <?= $generator->ns . '\\' . $className ?>;
  *
  * @property <?= $className ?> $model data model
  */
-class <?= $className ?>ActControl extends \fredyns\suites\libraries\ActionControl
+class <?= $className ?>ActControl extends \fredyns\suite\libraries\ActionControl
 {
 
     /**

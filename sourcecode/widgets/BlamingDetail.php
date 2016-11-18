@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\widgets;
+namespace fredyns\suite\widgets;
 
 use yii\helpers\ArrayHelper;
 

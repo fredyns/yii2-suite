@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\filters;
+namespace fredyns\suite\filters;
 
 use Yii;
 

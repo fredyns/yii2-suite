@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\helpers;
+namespace fredyns\suite\helpers;
 
 use Yii;
 use yii\web\Controller;

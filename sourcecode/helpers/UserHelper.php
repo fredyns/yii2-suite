@@ -1,11 +1,11 @@
 <?php
 
-namespace fredyns\suites\helpers;
+namespace fredyns\suite\helpers;
 
 use Yii;
 use dektrium\user\models\User as DektriumUser;
-use fredyns\suites\models\User;
-use fredyns\suites\models\Profile;
+use fredyns\suite\models\User;
+use fredyns\suite\models\Profile;
 
 /**
  * common function about user

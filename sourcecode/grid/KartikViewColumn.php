@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\grid;
+namespace fredyns\suite\grid;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -23,7 +23,7 @@ class KartikViewColumn extends \kartik\grid\DataColumn
      *
      * @var string
      */
-    public $actionControl = 'fredyns\suites\libraries\ActionControl';
+    public $actionControl = 'fredyns\suite\libraries\ActionControl';
 
     /**
      * @inheritdoc

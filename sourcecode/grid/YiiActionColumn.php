@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\grid;
+namespace fredyns\suite\grid;
 
 /**
  * Action Column Generator for Yii-grid
@@ -25,7 +25,7 @@ class YiiActionColumn extends \yii\grid\ActionColumn
      *
      * @var string
      */
-    public $actionControl = 'fredyns\suites\libraries\ActionControl';
+    public $actionControl = 'fredyns\suite\libraries\ActionControl';
 
     /**
      * configuration for ActionMenu widget

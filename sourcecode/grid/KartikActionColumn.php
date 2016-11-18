@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\grid;
+namespace fredyns\suite\grid;
 
 use Yii;
 
@@ -37,7 +37,7 @@ class KartikActionColumn extends \kartik\grid\ActionColumn
      *
      * @var string
      */
-    public $actionControl = 'fredyns\suites\libraries\ActionControl';
+    public $actionControl = 'fredyns\suite\libraries\ActionControl';
 
     /**
      * configuration for ActionMenu widget

@@ -1,12 +1,11 @@
 <?php
 
-namespace fredyns\suites\models;
+namespace fredyns\suite\models;
 
-use Yii;
 use yii\helpers\ArrayHelper;
 use dektrium\user\models\User as BaseUser;
-use fredyns\suites\traits\ModelTool;
-use fredyns\suites\traits\ModelBlame;
+use fredyns\suite\traits\ModelTool;
+use fredyns\suite\traits\ModelBlame;
 
 /**
  * This is the model class for table "user".

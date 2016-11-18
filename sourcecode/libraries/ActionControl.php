@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\libraries;
+namespace fredyns\suite\libraries;
 
 use Yii;
 use yii\base\InvalidConfigException;

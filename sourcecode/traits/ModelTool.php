@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\traits;
+namespace fredyns\suite\traits;
 
 use yii\helpers\ArrayHelper;
 

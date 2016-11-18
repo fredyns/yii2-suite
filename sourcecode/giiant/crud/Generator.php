@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\suites\giiant\crud;
+namespace fredyns\suite\giiant\crud;
 
 use Yii;
 use yii\gii\CodeFile;

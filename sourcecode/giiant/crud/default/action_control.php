@@ -33,7 +33,7 @@ use <?= ltrim($generator->modelClass, '\\') ?>;
  *
  * @property <?= $modelClass ?> $model data model
  */
-class <?= $modelClass ?>ActControl extends \fredyns\suites\libraries\ActionControl
+class <?= $modelClass ?>ActControl extends \fredyns\suite\libraries\ActionControl
 {
 
     /**

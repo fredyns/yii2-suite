@@ -1,19 +1,19 @@
 <?php
 
-namespace fredyns\suites\traits;
+namespace fredyns\suite\traits;
 
-use fredyns\suites\models\User;
-use fredyns\suites\models\Profile;
+use fredyns\suite\models\User;
+use fredyns\suite\models\Profile;
 
 /**
  * Add blaming for model
  *
- * @property fredyns\suites\models\User $createdByUser
- * @property fredyns\suites\models\User $updatedByUser
- * @property fredyns\suites\models\User $deletedByUser
- * @property fredyns\suites\models\Profile $createdByProfile
- * @property fredyns\suites\models\Profile $updatedByProfile
- * @property fredyns\suites\models\Profile $deletedByProfile
+ * @property fredyns\suite\models\User $createdByUser
+ * @property fredyns\suite\models\User $updatedByUser
+ * @property fredyns\suite\models\User $deletedByUser
+ * @property fredyns\suite\models\Profile $createdByProfile
+ * @property fredyns\suite\models\Profile $updatedByProfile
+ * @property fredyns\suite\models\Profile $deletedByProfile
  *
  * @author fredy
  */
