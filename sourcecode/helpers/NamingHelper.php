@@ -10,9 +10,14 @@ namespace fredyns\suites\helpers;
 class NamingHelper
 {
 
-    public function alternate($prefix = '', $name = '', $suffix = '')
+    public static function trim($name)
     {
-        $name = trim($name.', '.$suffix, ", \t\n\r\0\x0B");
+        return trim($name, ", \t\n\r\0\x0B");
+    }
+
+    public static function alternate($prefix = '', $name = '', $suffix = '')
+    {
+        $name = static::trim($name.', '.$suffix);
 
         if (strlen($prefix) > 0)
         {
@@ -22,9 +27,9 @@ class NamingHelper
         return $name;
     }
 
-    public function official($prefix = '', $name = '', $suffix = '')
+    public static function official($prefix = '', $name = '', $suffix = '')
     {
-        return trim($prefix.' '.$name.', '.$suffix, ", \t\n\r\0\x0B");
+        return static::trim($prefix.' '.$name.', '.$suffix);
     }
 
 }
