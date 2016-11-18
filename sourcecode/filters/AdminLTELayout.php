@@ -12,6 +12,12 @@ use Yii;
 class AdminLTELayout extends \yii\base\ActionFilter
 {
 
+    /**
+     * decide layout before execute action
+     *
+     * @param \yii\base\Action $action
+     * @return bool
+     */
     public function beforeAction($action)
     {
         $main     = '@app/views/layouts/main';

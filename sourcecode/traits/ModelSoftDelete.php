@@ -14,11 +14,21 @@ use Yii;
 trait ModelSoftDelete
 {
 
+    /**
+     * status for active data model
+     *
+     * @return string
+     */
     public function recordStatus_active()
     {
         return 'active';
     }
 
+    /**
+     * status for soft-deleted data model
+     *
+     * @return string
+     */
     public function recordStatus_deleted()
     {
         return 'deleted';

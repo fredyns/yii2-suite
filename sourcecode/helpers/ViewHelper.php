@@ -18,6 +18,7 @@ class ViewHelper
      * inspired by yii\base\View::findViewFile()
      *
      * Finds the view file based on the given view name.
+     * 
      * @param string $view the view name or the path alias of the view file. Please refer to [[render()]]
      * on how to specify this parameter.
      * @param object $context the context to be assigned to the view and can later be accessed via [[context]]
