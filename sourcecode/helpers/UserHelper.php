@@ -3,7 +3,7 @@
 namespace fredyns\suite\helpers;
 
 use Yii;
-use dektrium\user\models\User as DektriumUser;
+use yii\helpers\ArrayHelper;
 use fredyns\suite\models\User;
 use fredyns\suite\models\Profile;
 
@@ -17,57 +17,49 @@ class UserHelper
 {
 
     /**
-     * check whether current user is admin
+     * get user model class name
      *
-     * @return boolean
+     * @return string
      */
-    public static function isAdmin()
+    public static function userClass()
     {
-        $user = Yii::$app->user;
-
-        if ($user->isGuest == FALSE)
-        {
-            if ($user->identity instanceof DektriumUser)
-            {
-                return $user->identity->isAdmin;
-            }
-        }
-
-        return FALSE;
+        return ArrayHelper::getValue(Yii::$app->modules, 'user.modelMap.User', User::className());
     }
 
     /**
-     * get spesified attribute from user model
+     * get profile model class name
      *
-     * @param string $classname
-     * @param integer $user_id
-     * @param string $attribute
-     * @param mixed $default
-     * @return mixed
+     * @return string
      */
-    public static function modelAttribute($classname, $user_id, $attribute = null, $default = null)
+    public static function profileClass()
     {
-        if (($model = $classname::findOne($user_id)) !== null)
-        {
-            if (empty($attribute))
-            {
-                return $model;
-            }
+        return ArrayHelper::getValue(Yii::$app->modules, 'user.modelMap.Profile', Profile::className());
+    }
 
-            if ($model->hasAttribute($attribute))
-            {
-                $value = $model->getAttribute($attribute);
+    /**
+     * get user model
+     *
+     * @param integer $user_id
+     * @return \fredyns\suite\models\User
+     */
+    public static function user($user_id)
+    {
+        $classname = static::userClass();
 
-                if (empty($value) == FALSE)
-                {
-                    return $value;
-                }
-            }
+        return $classname::findOne($user_id);
+    }
 
-            return $default;
-        }
+    /**
+     * get profile model
+     *
+     * @param integer $user_id
+     * @return \fredyns\suite\models\Profile
+     */
+    public static function profile($user_id)
+    {
+        $classname = static::profileClass();
 
-        return null;
+        return $classname::findOne($user_id);
     }
 
     /**
@@ -78,9 +70,14 @@ class UserHelper
      * @param mixed $default
      * @return mixed
      */
-    public static function account($user_id, $attribute = null, $default = null)
+    public static function userAttr($user_id, $attribute, $default = null)
     {
-        return static::modelAttribute(User::className(), $user_id, $attribute, $default);
+        if (($model = static::user($user_id)) !== null)
+        {
+            return ArrayHelper::getValue($model, $attribute, $default);
+        }
+
+        return null;
     }
 
     /**
@@ -91,9 +88,14 @@ class UserHelper
      * @param mixed $default
      * @return mixed
      */
-    public static function profile($user_id, $attribute = null, $default = null)
+    public static function profileAttr($user_id, $attribute, $default = null)
     {
-        return static::modelAttribute(Profile::className(), $user_id, $attribute, $default);
+        if (($model = static::profile($user_id)) !== null)
+        {
+            return ArrayHelper::getValue($model, $attribute, $default);
+        }
+
+        return null;
     }
 
 }

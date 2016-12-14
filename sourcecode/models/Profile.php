@@ -4,7 +4,9 @@ namespace fredyns\suite\models;
 
 use yii\helpers\ArrayHelper;
 use dektrium\user\models\Profile as BaseProfile;
+use mdm\upload\FileModel;
 use fredyns\suite\helpers\StringHelper;
+use fredyns\suite\helpers\ThumbnailHelper;
 use fredyns\suite\traits\ModelTool;
 use fredyns\suite\traits\ModelBlame;
 
@@ -27,7 +29,7 @@ class Profile extends BaseProfile
         return ArrayHelper::merge(
                 parent::behaviors(),
                 [
-                [
+                    [
                     'class'          => 'mdm\upload\UploadBehavior',
                     'attribute'      => 'picture', // required, use to receive input file
                     'savedAttribute' => 'picture_id', // optional, use to link model with saved file.
@@ -35,6 +37,17 @@ class Profile extends BaseProfile
                     'autoSave'       => true, // when true then uploaded file will be save before ActiveRecord::save()
                     'autoDelete'     => true, // when true then uploaded file will deleted before ActiveRecord::delete()
                     'deleteOldFile'  => TRUE,
+                    'saveCallback'   => function(FileModel $fileModel)
+                    {
+                        $saved = $fileModel->file->saveAs($fileModel->filename, false);
+
+                        if ($saved)
+                        {
+                            ThumbnailHelper::crop($fileModel->filename);
+                        }
+
+                        return $saved;
+                    },
                 ],
                 ]
         );
@@ -49,12 +62,12 @@ class Profile extends BaseProfile
                 parent::rules(),
                 [
                 'plaintextFilter' => [
-                    ['name', 'public_email', 'location', 'website', 'bio'],
+                        ['name', 'public_email', 'location', 'website', 'bio'],
                     'filter',
                     'filter' => function ($value)
-                {
-                    return StringHelper::plaintextFilter($value);
-                },
+                    {
+                        return StringHelper::plaintextFilter($value);
+                    },
                 ],
                 'nameRequired' => ['name', 'required'],
                 /* upload */
@@ -78,6 +91,14 @@ class Profile extends BaseProfile
                 'picture_id' => 'Picture',
                 ]
         );
+    }
+
+    /**
+     * @return \yii\db\ActiveQueryInterface
+     */
+    public function getPicture()
+    {
+        return $this->hasOne(FileModel::className(), ['id' => 'picture_id']);
     }
 
 }
