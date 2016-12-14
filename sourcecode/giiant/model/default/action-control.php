@@ -18,7 +18,6 @@ use yii\helpers\StringHelper;
 
 echo "<?php\n";
 
-$actionControlNamespace = str_replace('models', 'actioncontrols', $generator->ns);
 $routes = [Inflector::camel2id($className, '-', true)]; 
 
 // detect additional routes
@@ -31,7 +30,7 @@ if ($namespaceCount > 2) {
 }
 ?>
 
-namespace <?= $actionControlNamespace ?>;
+namespace <?= $generator->actionNs ?>;
 
 use yii\helpers\ArrayHelper;
 use <?= $generator->ns . '\\' . $className ?>;

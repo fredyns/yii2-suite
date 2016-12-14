@@ -6,11 +6,10 @@
  * @license http://www.phundament.com/license/
  */
 
-namespace fredyns\giiantTemplate\model;
+namespace fredyns\suite\giiant\model;
 
 use Yii;
 use yii\gii\CodeFile;
-use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use schmunk42\giiant\helpers\SaveForm;
 
@@ -21,13 +20,17 @@ use schmunk42\giiant\helpers\SaveForm;
  */
 class Generator extends \schmunk42\giiant\generators\model\Generator
 {
+    public $generateRelationsFromCurrentSchema = false;
+    public $useSchemaName                      = false;
+    public $actionNs                           = 'app\actioncontrols';
+    public $formNs                             = 'app\models\form';
 
     /**
      * {@inheritdoc}
      */
     public function requiredTemplates()
     {
-        return ['model.php', 'model-extended.php', 'model-form.php', 'action_control.php'];
+        return ['model.php', 'model-extended.php', 'model-form.php', 'action-control.php'];
     }
 
     /**
@@ -39,6 +42,16 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
         $relations = $this->generateRelations();
         $db        = $this->getDbConnection();
 
+        /**
+         * fredyns: start
+         * preparing additional variables
+         */
+        $this->actionNs = str_replace('models', 'actioncontrols', $this->ns);
+        $this->formNs   = $this->ns.'\form';
+
+        /**
+         * fredyns: end
+         */
         foreach ($this->getTableNames() as $tableName)
         {
             list($relations, $translations) = array_values($this->extractTranslations($tableName, $relations));
@@ -83,24 +96,25 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
                 );
 
                 /**
-                 * Fredy:start=====================
+                 * fredyns: start
                  *
-                 * add form model & action_control
+                 * add form model & action-control
                  */
-                $formClassFile = Yii::getAlias('@'.str_replace('\\', '/', $this->ns)).'/form/'.$className.'Form.php';
+                $formFilename = $className.'Form.php';
+                $formFilepath = Yii::getAlias('@'.str_replace('\\', '/', $this->formNs)).'/'.$formFilename;
 
                 $files[] = new CodeFile(
-                    $formClassFile, $this->render('model-form.php', $params)
+                    $formFilepath, $this->render('model-form.php', $params)
                 );
 
-                $actionControlClassFile = Yii::getAlias('@'.str_replace('\\', '/', $this->ns)).'/'.$className.'ActControl.php';
-                $actionControlClassFile = str_replace('models', 'actioncontrols', $actionControlClassFile);
+                $actionFilename = $className.'ActControl.php';
+                $actionFilepath = Yii::getAlias('@'.str_replace('\\', '/', $this->actionNs)).'/'.$actionFilename;
 
                 $files[] = new CodeFile(
-                    $actionControlClassFile, $this->render('action_control.php', $params)
+                    $actionFilepath, $this->render('action-control.php', $params)
                 );
                 /**
-                 * Fredy:end==================
+                 * fredyns: end
                  */
             }
 
@@ -137,5 +151,32 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
         return $files;
     }
 
+    protected function generateRelations()
+    {
+        return parent::generateRelations();
+
+        // inject namespace
+        $ns = "\\{$this->ns}\\";
+        foreach ($relations as $model => $relInfo)
+        {
+            foreach ($relInfo as $relName => $relData)
+            {
+
+                // removed duplicated relations, eg. klientai, klientai0
+                if ($this->removeDuplicateRelations && is_numeric(substr($relName, -1)))
+                {
+                    unset($relations[$model][$relName]);
+                    continue;
+                }
+
+                $relations[$model][$relName][0] = preg_replace(
+                    '/(has[A-Za-z0-9]+\()([a-zA-Z0-9]+::)/', '$1__NS__$2', $relations[$model][$relName][0]
+                );
+                $relations[$model][$relName][0] = str_replace('__NS__', $ns, $relations[$model][$relName][0]);
+            }
+        }
+
+        return $relations;
+    }
 
 }

@@ -15,12 +15,12 @@
 echo "<?php\n";
 ?>
 
-namespace <?= $generator->ns ?>\form;
+namespace <?= $generator->formNs ?>;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use fredyns\suite\helpers\StringHelper;
 use <?= $generator->ns . '\\' . $className ?>;
-use fredyns\components\helpers\StringHelper;
 
 /**
  * This is the form model class for table "<?= $tableName ?>".
@@ -54,7 +54,7 @@ class <?= $className ?>Form extends <?= $className . "\n" ?>
           /* field type */
           /* value limitation */
           /* value references */
-          <?= implode(",\n            ", $rules) . ",\n" ?>
+          <?= implode(",\n          ", $rules) . ",\n" ?>
         ];
     }
 

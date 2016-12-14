@@ -25,10 +25,10 @@ namespace <?= $generator->ns ?>;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use fredyns\suite\traits\ModelTool;
+use fredyns\suite\traits\ModelBlame;
+use fredyns\suite\traits\ModelSoftDelete;
 use <?= $generator->ns ?>\base\<?= $className ?> as Base<?= $className ?>;
-use fredyns\components\traits\ModelTool;
-use fredyns\components\traits\ModelBlame;
-use fredyns\components\traits\ModelSoftDelete;
 
 /**
  * This is the model class for table "<?= $tableName ?>".
