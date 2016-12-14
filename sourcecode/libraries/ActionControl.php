@@ -9,8 +9,6 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 USE yii\web\ForbiddenHttpException;
-USE yii\web\NotFoundHttpException;
-use yii\base\UserException;
 use cornernote\returnurl\ReturnUrl;
 use kartik\icons\Icon;
 
@@ -33,7 +31,7 @@ use kartik\icons\Icon;
  * @property array $urlView url config for View page
  * @property array $urlUpdate url config for Update page
  * @property array $urlDelete url config for Delete
- * @property array $urlRestore url config for Restore 
+ * @property array $urlRestore url config for Restore
  *
  * @property string $linkTo link o view detail
  */
@@ -81,7 +79,7 @@ class ActionControl extends \yii\base\Object
     {
         $msg = ArrayHelper::getValue($this->errors, $name, []);
 
-        if ($asString)
+        if ($msg && $asString)
         {
             return implode("<br/>\n", $msg);
         }
@@ -101,27 +99,22 @@ class ActionControl extends \yii\base\Object
     }
 
     /**
-     * throw error messages
+     * Checks the privilege of the current user.
      *
-     * @param string $name
-     * @param integer $code
-     * @return UserException|NotFoundHttpException|ForbiddenHttpException
+     * This method should be overridden to check whether the current user has the privilege
+     * to run the specified action against the specified data model.
+     * If the user does not have access, a [[ForbiddenHttpException]] should be thrown.
+     *
+     * @param string $action the ID of the action to be executed
+     * @throws ForbiddenHttpException if the user does not have access
      */
-    public function exception($name, $code = null)
+    public function checkAccess($action)
     {
-        $message = $this->getError($name, TRUE);
+        if ($this->allow($action) == FALSE)
+        {
+            $message = $this->getError($action, TRUE);
 
-        if (is_null($code) == FALSE)
-        {
-            return new UserException($message, $code);
-        }
-        elseif (Yii::$app->user->isGuest)
-        {
-            return new NotFoundHttpException($message);
-        }
-        else
-        {
-            return new ForbiddenHttpException($message);
+            throw new ForbiddenHttpException($message);
         }
     }
 
@@ -132,7 +125,7 @@ class ActionControl extends \yii\base\Object
      * @param string $action
      * @return boolean
      */
-    public function allow($action, $throwError = FALSE)
+    public function allow($action)
     {
         if (array_key_exists($action, $this->allowed) == FALSE)
         {
@@ -147,13 +140,6 @@ class ActionControl extends \yii\base\Object
                 $this->addError($action, 'Not Allowed Action.');
                 $this->allowed[$action] = FALSE;
             }
-        }
-
-        if ($this->allowed[$action] == FALSE && $throwError)
-        {
-            $message = $this->getError($action, TRUE);
-
-            throw new ForbiddenHttpException($message);
         }
 
         return $this->allowed[$action];
@@ -181,7 +167,7 @@ class ActionControl extends \yii\base\Object
         /**
          * default to be false.
          * because not all models support soft-delete
-         * must be configured independently
+         * must be configured properly
          */
         return FALSE;
     }
