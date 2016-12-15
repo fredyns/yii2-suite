@@ -1,15 +1,16 @@
 {
     "name": "fredyns/yii2-suite",
-    "description": "my very own signature of code",
+    "description": "additional function and helpers for Yii2 Framework",
     "type": "yii2-extension",
     "keywords": [
         "yii2",
         "extension",
-        "lbac",
+        "suite",
         "access control",
-        "narcisme"
+        "giiant",
+        "code generator template"
     ],
-    "license": "WTF-PL",
+    "license": "unlicense",
     "authors": [
         {
             "name": "Fredy Nurman Saleh",
@@ -19,6 +20,7 @@
     "minimum-stability": "dev",
     "require": {
         "yiisoft/yii2": "*",
+        "yiisoft/yii2-imagine": "^2.1",
         "cornernote/yii2-returnurl": "*",
         "dektrium/yii2-user": "0.9.*@dev",
         "dmstr/yii2-adminlte-asset": "^2.3",
