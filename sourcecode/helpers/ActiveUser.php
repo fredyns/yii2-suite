@@ -13,7 +13,7 @@ use dektrium\user\models\User as DektriumUser;
  *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
-class ActiveUser extends UserHelper
+class ActiveUser
 {
 
     /**
@@ -48,7 +48,7 @@ class ActiveUser extends UserHelper
             return null;
         }
 
-        return static::user(Yii::$app->user->id);
+        return UserHelper::user(Yii::$app->user->id);
     }
 
     /**
@@ -63,7 +63,7 @@ class ActiveUser extends UserHelper
             return null;
         }
 
-        return static::profile(Yii::$app->user->id);
+        return UserHelper::profile(Yii::$app->user->id);
     }
 
     /**
@@ -76,7 +76,7 @@ class ActiveUser extends UserHelper
             return $default;
         }
 
-        return parent::userAttr(Yii::$app->user->id, $attribute, $default);
+        return UserHelper::userAttr(Yii::$app->user->id, $attribute, $default);
     }
 
     /**
@@ -89,7 +89,7 @@ class ActiveUser extends UserHelper
             return $default;
         }
 
-        return parent::profileAttr(Yii::$app->user->id, $attribute, $default);
+        return UserHelper::profileAttr(Yii::$app->user->id, $attribute, $default);
     }
 
     /**
