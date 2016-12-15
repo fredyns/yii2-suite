@@ -6,9 +6,9 @@
  * Time: 10:21.
  */
 
-namespace fredyns\giiantTemplate\crud\providers\core;
+namespace fredyns\suite\giiant\crud\providers\core;
 
-use fredyns\giiantTemplate\model\Generator as ModelGenerator;
+use fredyns\suite\giiant\model\Generator as ModelGenerator;
 use yii\db\ActiveRecord;
 use yii\db\ColumnSchema;
 use yii\helpers\Inflector;
@@ -150,7 +150,7 @@ EOS;
 
         $actionColumn = <<<EOS
           [
-          'class' => 'fredyns\lbac\KartikActionColumn',
+          'class' => 'fredyns\suite\grid\KartikActionColumn',
           'actionControl' => '{$actionControlClassname}',
           ],
 EOS;

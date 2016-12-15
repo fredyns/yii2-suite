@@ -54,7 +54,7 @@ public $modelClass = '<?= $generator->modelClass ?>';
         
         $actControl = new <?= $actControlClass ?>(['model' => $model]);
 
-        return $actControl->allow($action, true);
+        $actControl->checkAccess($action);
     }
 
 }

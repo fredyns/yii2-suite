@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\giiantTemplate\crud\providers\core;
+namespace fredyns\suite\giiant\crud\providers\core;
 
 use yii\db\ColumnSchema;
 

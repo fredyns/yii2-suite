@@ -1,6 +1,6 @@
 <?php
 
-namespace fredyns\giiantTemplate\crud\providers\extensions;
+namespace fredyns\suite\giiant\crud\providers\extensions;
 
 use yii\db\ColumnSchema;
 use yii\helpers\Inflector;

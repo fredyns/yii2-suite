@@ -114,7 +114,7 @@ echo '?>';
         'columns' => [
                 ['class' => 'kartik\grid\SerialColumn'],
                 [
-                    'class'         => 'fredyns\lbac\KartikViewColumn',
+                    'class'         => 'fredyns\suite\grid\KartikViewColumn',
                     'actionControl' => '<?= $actioncontrolPath; ?>',
                     'attribute'     => '<?= $generator->getModelLabel(); ?>',
                 ],
@@ -150,7 +150,7 @@ echo '?>';
 
         ?>
                 [
-                    'class' => 'fredyns\lbac\KartikActionColumn',
+                    'class' => 'fredyns\suitegrid\KartikActionColumn',
                     'actionControl' => '<?= $actioncontrolPath; ?>',
                 ],        
         ],

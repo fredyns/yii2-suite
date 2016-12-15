@@ -106,10 +106,7 @@ public function actionIndex()
 {
     $actionControl = new <?= $actioncontrolClass ?>();
 
-    if ($actionControl->allow('index') == FALSE)
-    {
-        throw $actionControl->exception('index');
-    }
+    $actionControl->checkAccess('index');
 
 <?php if ($searchModelClass !== '') {
     ?>
@@ -138,7 +135,7 @@ return $this->render('index', [
 ]);
 }
 
-<?php if (in_array('fredyns\components\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
+<?php if (in_array('fredyns\suite\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
 
 /**
 * Lists deleted <?= $modelClass ?> models.
@@ -148,10 +145,7 @@ public function actionDeleted()
 {
     $actionControl = new <?= $actioncontrolClass ?>();
 
-    if ($actionControl->allow('deleted') == FALSE)
-    {
-        throw $actionControl->exception('deleted');
-    }
+    $actionControl->checkAccess('deleted');
 
 <?php if ($searchModelClass !== '') {
     ?>
@@ -193,10 +187,7 @@ public function actionView(<?= $actionParams ?>)
     $model         = $this->findModel(<?= $actionParams ?>);
     $actionControl = new <?= $actioncontrolClass ?>(['model' => $model]);
 
-    if ($actionControl->allow('view') == FALSE)
-    {
-        throw $actionControl->exception('view');
-    }
+    $actionControl->checkAccess('view');
 
 \Yii::$app->session['__crudReturnUrl'] = ReturnUrl::getUrl(Url::previous());
 
@@ -219,10 +210,7 @@ public function actionCreate()
 $model = new <?= $modelClass ?>Form;
     $actionControl = new <?= $actioncontrolClass ?>(['model' => $model]);
 
-    if ($actionControl->allow('create') == FALSE)
-    {
-        throw $actionControl->exception('create');
-    }
+    $actionControl->checkAccess('create');
 
 try {
 if ($model->load($_POST) && $model->save()) {
@@ -253,10 +241,7 @@ public function actionUpdate(<?= $actionParams ?>)
 $model = $this->findForm(<?= $actionParams ?>);
     $actionControl = new <?= $actioncontrolClass ?>(['model' => $model]);
 
-    if ($actionControl->allow('update') == FALSE)
-    {
-        throw $actionControl->exception('update');
-    }
+    $actionControl->checkAccess('update');
 
 if ($model->load($_POST) && $model->save()) {
             \Yii::$app->getSession()->addFlash('success', "Data successfully updated!");
@@ -282,10 +267,7 @@ try {
             $model         = $this->findModel(<?= $actionParams ?>);
     $actionControl = new <?= $actioncontrolClass ?>(['model' => $model]);
 
-            if ($actionControl->allow('delete') == FALSE)
-            {
-                throw $actionControl->exception('delete');
-            }
+    $actionControl->checkAccess('delete');
 
             if ($model->delete() !== FALSE)
             {
@@ -299,7 +281,7 @@ return $this->redirect(ReturnUrl::getUrl(Url::previous()));
 }
 }
 
-<?php if (in_array('fredyns\components\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
+<?php if (in_array('fredyns\suite\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
 
 /**
 * Restores an deleted <?= $modelClass ?> model.
@@ -313,10 +295,7 @@ try {
             $model         = $this->findModel(<?= $actionParams ?>);
     $actionControl = new <?= $actioncontrolClass ?>(['model' => $model]);
 
-            if ($actionControl->allow('restore') == FALSE)
-            {
-                throw $actionControl->exception('restore');
-            }
+    $actionControl->checkAccess('restore');
 
             if ($model->restore() !== FALSE)
             {

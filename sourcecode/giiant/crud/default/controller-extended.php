@@ -7,7 +7,7 @@ echo "<?php\n";
 
 namespace <?= \yii\helpers\StringHelper::dirname(ltrim($generator->controllerClass, '\\')) ?>;
 
-use app\filters\Layout;
+use fredyns\suite\filters\AdminLTELayout;
 
 /**
 * This is the class for controller "<?= $controllerClassName ?>".
@@ -18,7 +18,7 @@ class <?= $controllerClassName ?> extends <?= (isset($generator->controllerNs) ?
     {
         return [
             'layout' => [
-                'class' => Layout::className(),
+                'class' => AdminLTELayout::className(),
             ],
         ];
     }

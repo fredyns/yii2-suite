@@ -31,12 +31,12 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\DetailView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 use cornernote\returnurl\ReturnUrl;
 use dmstr\bootstrap\Tabs;
-use fredyns\components\helpers\UserHelper;
+use fredyns\suite\helpers\ActiveUser;
+use fredyns\suite\widgets\DetailView;
 use kartik\grid\GridView;
 
 /**
@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('view');
         <small>
             <?= '<?= $model->'.$generator->getModelNameAttribute($generator->modelClass)." ?>\n" ?>
 
-<?php if (in_array('fredyns\components\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
+<?php if (in_array('fredyns\suite\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
 
             <?= "<?php" ?> if ($model->recordStatus == 'deleted'): ?>
                 <span class="badge">deleted</span>
@@ -190,6 +190,7 @@ EOS;
     <?=
     DetailView::widget([
         'model' => \$model,
+        'profileActControl' => 'app\actioncontrols\ProfileActControl',
         'attributes' => [\n
 EOS;
 
@@ -208,21 +209,9 @@ EOS;
         {
             echo <<<EOS
             [
-                'attribute' => 'created_at',
-                'format'    => [
-                    'date',
-                    'dateFormat' => 'php:d M Y, H:i (e, P)',
-                ],
-            ],\n
-EOS;
-        }
-
-        if (in_array('created_by', $infoAttributes))
-        {
-            echo <<<EOS
-            [
-                'label'     => 'Created By',
-                'attribute' => 'createdBy.name',
+                'label'     => 'Created',
+                'blamed'    => 'createdBy',
+                'timestamp' => 'created_at',
             ],\n
 EOS;
         }
@@ -231,21 +220,9 @@ EOS;
         {
             echo <<<EOS
             [
-                'attribute' => 'updated_at',
-                'format'    => [
-                    'date',
-                    'dateFormat' => 'php:d M Y, H:i (e, P)',
-                ],
-            ],\n
-EOS;
-        }
-
-        if (in_array('updated_by', $infoAttributes))
-        {
-            echo <<<EOS
-            [
-                'label'     => 'Updated By',
-                'attribute' => 'updatedBy.name',
+                'label'     => 'Updated',
+                'blamed'    => 'updatedBy',
+                'timestamp' => 'updated_at',
             ],\n
 EOS;
         }
@@ -254,27 +231,12 @@ EOS;
         {
             echo <<<EOS
             [
-                'attribute' => 'deleted_at',
-                'format'    => [
-                    'date',
-                    'dateFormat' => 'php:d M Y, H:i (e, P)',
-                ],
+                'label'     => 'Deleted',
+                'blamed'    => 'deletedBy',
+                'timestamp' => 'deleted_at',
             ],\n
 EOS;
         }
-
-        if (in_array('deleted_by', $infoAttributes))
-        {
-            echo <<<EOS
-            [
-                'label'     => 'Deleted By',
-                'attribute' => 'deletedBy.name',
-            ],\n
-EOS;
-        }
-
-        echo <<<EOS
-EOS;
 
         echo <<<EOS
         ],
@@ -288,7 +250,7 @@ EOS;
     'content' => \$this->blocks['info'],
     'label'   => '<small>info</small>',
     'active'  => false,
-    'visible'  => UserHelper::isAdmin(),
+    'visible'  => ActiveUser::isAdmin(),
 ],\n
 EOS;
     }

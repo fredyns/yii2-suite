@@ -23,11 +23,11 @@ if (empty($safeAttributes)) {
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use \dmstr\bootstrap\Tabs;
+use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use cornernote\returnurl\ReturnUrl;
+use dmstr\bootstrap\Tabs;
 
 /**
 * @var yii\web\View $this

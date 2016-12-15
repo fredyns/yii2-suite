@@ -6,21 +6,22 @@
  * Time: 01:01.
  */
 
-namespace fredyns\giiantTemplate\crud\providers\core;
+namespace fredyns\suite\giiant\crud\providers\core;
 
 class CallbackProvider extends \schmunk42\giiant\base\Provider
 {
-    public $activeFields = [];
+    public $activeFields        = [];
     public $prependActiveFields = [];
-    public $appendActiveFields = [];
-    public $attributeFormats = [];
-    public $columnFormats = [];
-    public $partialViews = [];
+    public $appendActiveFields  = [];
+    public $attributeFormats    = [];
+    public $columnFormats       = [];
+    public $partialViews        = [];
 
     public function activeField($attribute, $model, $generator)
     {
         $key = $this->findValue($this->getModelKey($attribute, $model), $this->activeFields);
-        if ($key) {
+        if ($key)
+        {
             return $this->activeFields[$key]($attribute, $model, $generator);
         }
     }
@@ -28,7 +29,8 @@ class CallbackProvider extends \schmunk42\giiant\base\Provider
     public function prependActiveField($attribute, $model, $generator)
     {
         $key = $this->findValue($this->getModelKey($attribute, $model), $this->prependActiveFields);
-        if ($key) {
+        if ($key)
+        {
             return $this->prependActiveFields[$key]($attribute, $model, $generator);
         }
     }
@@ -36,7 +38,8 @@ class CallbackProvider extends \schmunk42\giiant\base\Provider
     public function appendActiveField($attribute, $model, $generator)
     {
         $key = $this->findValue($this->getModelKey($attribute, $model), $this->appendActiveFields);
-        if ($key) {
+        if ($key)
+        {
             return $this->appendActiveFields[$key]($attribute, $model, $generator);
         }
     }
@@ -44,7 +47,8 @@ class CallbackProvider extends \schmunk42\giiant\base\Provider
     public function attributeFormat($attribute, $model, $generator)
     {
         $key = $this->findValue($this->getModelKey($attribute, $model), $this->attributeFormats);
-        if ($key) {
+        if ($key)
+        {
             return $this->attributeFormats[$key]($attribute, $model, $generator);
         }
     }
@@ -52,7 +56,8 @@ class CallbackProvider extends \schmunk42\giiant\base\Provider
     public function columnFormat($attribute, $model, $generator)
     {
         $key = $this->findValue($this->getModelKey($attribute, $model), $this->columnFormats);
-        if ($key) {
+        if ($key)
+        {
             return $this->columnFormats[$key]($attribute, $model, $generator);
         }
     }
@@ -60,7 +65,8 @@ class CallbackProvider extends \schmunk42\giiant\base\Provider
     public function partialView($name, $model, $generator)
     {
         $key = $this->findValue($this->getModelKey($name, $model), $this->partialViews);
-        if ($key) {
+        if ($key)
+        {
             return $this->partialViews[$key]($name, $model, $generator);
         }
     }
@@ -72,10 +78,13 @@ class CallbackProvider extends \schmunk42\giiant\base\Provider
 
     private function findValue($subject, $array)
     {
-        foreach ($array as $key => $value) {
-            if (preg_match('/'.$key.'/', $subject)) {
+        foreach ($array as $key => $value)
+        {
+            if (preg_match('/'.$key.'/', $subject))
+            {
                 return $key;
             }
         }
     }
+
 }

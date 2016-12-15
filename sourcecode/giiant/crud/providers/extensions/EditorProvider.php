@@ -5,7 +5,7 @@
  * Date: 14.03.14
  * Time: 10:21.
  */
-namespace fredyns\giiantTemplate\crud\providers\extensions;
+namespace fredyns\suite\giiant\crud\providers\extensions;
 
 class EditorProvider extends \schmunk42\giiant\base\Provider
 {

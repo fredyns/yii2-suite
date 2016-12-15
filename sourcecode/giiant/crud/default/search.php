@@ -17,7 +17,7 @@ $labels = $generator->generateSearchLabels();
 $searchAttributes = $generator->getSearchAttributes();
 $searchConditions = $generator->generateSearchConditions();
 
-$softDelete = in_array('fredyns\components\traits\ModelSoftDelete', class_uses($generator->modelClass));
+$softDelete = in_array('fredyns\suite\traits\ModelSoftDelete', class_uses($generator->modelClass));
 
 echo "<?php\n";
 ?>
