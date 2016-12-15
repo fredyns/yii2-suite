@@ -3,10 +3,11 @@
 namespace fredyns\suite\widgets;
 
 use yii\helpers\ArrayHelper;
+use fredyns\suite\libraries\ActionControl;
 
 /**
  * Generate blamable profile & timestamp in DetailView
- * 
+ *
  * @author Fredy Nurman Saleh <email@fredyns.net>
  */
 class BlamingDetail extends \yii\base\Widget
@@ -103,10 +104,17 @@ class BlamingDetail extends \yii\base\Widget
             return $name;
         }
 
-        $actionControl = \Yii::createObject([
-                'class' => $this->actionControl,
-                'model' => $model,
-        ]);
+        try
+        {
+            $actionControl = \Yii::createObject([
+                    'class' => $this->actionControl,
+                    'model' => $model,
+            ]);
+        }
+        catch (\Exception $ex)
+        {
+            return $name;
+        }
 
         if ($actionControl instanceof ActionControl)
         {

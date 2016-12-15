@@ -3,6 +3,7 @@
 namespace fredyns\suite\widgets;
 
 use yii\helpers\ArrayHelper;
+use fredyns\suite\libraries\ActionControl;
 
 /**
  * Generate link in DetailView regarding it's Action control
@@ -14,6 +15,7 @@ class LinkedDetail extends \yii\base\Widget
     public $model;
     public $attribute;
     public $actionControl;
+    public $emptyMessage = '<span class="label label-warning">?</span>';
 
     /**
      * @inheritdoc
@@ -31,12 +33,7 @@ class LinkedDetail extends \yii\base\Widget
 
         if (empty($model))
         {
-            return null;
-        }
-
-        if (is_scalar($label) == FALSE)
-        {
-            $label = 'view';
+            return $this->emptyMessage;
         }
 
         if (empty($this->actionControl))
@@ -44,10 +41,22 @@ class LinkedDetail extends \yii\base\Widget
             return $label;
         }
 
-        $actionControl = \Yii::createObject([
-                'class' => $this->actionControl,
-                'model' => $model,
-        ]);
+        try
+        {
+            $actionControl = \Yii::createObject([
+                    'class' => $this->actionControl,
+                    'model' => $model,
+            ]);
+        }
+        catch (\Exception $ex)
+        {
+            return $label;
+        }
+
+        if (is_scalar($label) == FALSE)
+        {
+            $label = $actionControl->modelLabel();
+        }
 
         if ($actionControl instanceof ActionControl)
         {
