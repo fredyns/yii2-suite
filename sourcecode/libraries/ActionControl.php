@@ -101,21 +101,37 @@ class ActionControl extends \yii\base\Object
     /**
      * Checks the privilege of the current user.
      *
-     * This method should be overridden to check whether the current user has the privilege
-     * to run the specified action against the specified data model.
      * If the user does not have access, a [[ForbiddenHttpException]] should be thrown.
      *
      * @param string $action the ID of the action to be executed
      * @throws ForbiddenHttpException if the user does not have access
      */
-    public function checkAccess($action)
+    public function check($action, $params = [])
     {
-        if ($this->allow($action) == FALSE)
+        if ($this->allow($action, $params) == FALSE)
         {
             $message = $this->getError($action, TRUE);
 
             throw new ForbiddenHttpException($message);
         }
+    }
+
+    /**
+     * create action control instance & check spesific action
+     *
+     * @param type $action
+     * @param type $model
+     * @return \static
+     */
+    public static function checkAccess($action, $model = null, $params = [])
+    {
+        $actControl = new static([
+            'model' => $model,
+        ]);
+
+        $actControl->check($action, $params);
+
+        return $actControl;
     }
 
     /**
@@ -125,7 +141,7 @@ class ActionControl extends \yii\base\Object
      * @param string $action
      * @return boolean
      */
-    public function allow($action)
+    public function allow($action, $params = [])
     {
         if (array_key_exists($action, $this->allowed) == FALSE)
         {
@@ -133,11 +149,11 @@ class ActionControl extends \yii\base\Object
 
             if (method_exists($this, $function))
             {
-                $this->allowed[$action] = $this->$function();
+                $this->allowed[$action] = call_user_func_array([$this, $function], [$params]);
             }
             else
             {
-                $this->addError($action, 'Not Allowed Action.');
+                $this->addError($action, "Action '{$action}' Not Allowed.");
                 $this->allowed[$action] = FALSE;
             }
         }
@@ -150,7 +166,7 @@ class ActionControl extends \yii\base\Object
      *
      * @return boolean
      */
-    public function getAllowIndex()
+    public function getAllowIndex($params = [])
     {
         return TRUE;
     }
@@ -160,7 +176,7 @@ class ActionControl extends \yii\base\Object
      *
      * @return boolean
      */
-    public function getAllowDeleted()
+    public function getAllowDeleted($params = [])
     {
         $this->addError('deleted', "Deleted model page is not configured properly.");
 
@@ -177,7 +193,7 @@ class ActionControl extends \yii\base\Object
      *
      * @return boolean
      */
-    public function getAllowCreate()
+    public function getAllowCreate($params = [])
     {
         return TRUE;
     }
@@ -187,7 +203,7 @@ class ActionControl extends \yii\base\Object
      *
      * @return boolean
      */
-    public function getAllowView()
+    public function getAllowView($params = [])
     {
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE)
@@ -212,7 +228,7 @@ class ActionControl extends \yii\base\Object
      *
      * @return boolean
      */
-    public function getAllowUpdate()
+    public function getAllowUpdate($params = [])
     {
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE)
@@ -237,7 +253,7 @@ class ActionControl extends \yii\base\Object
      *
      * @return boolean
      */
-    public function getAllowDelete()
+    public function getAllowDelete($params = [])
     {
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE)
@@ -270,7 +286,7 @@ class ActionControl extends \yii\base\Object
      *
      * @return boolean
      */
-    public function getAllowRestore()
+    public function getAllowRestore($params = [])
     {
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE)
@@ -488,10 +504,30 @@ class ActionControl extends \yii\base\Object
         {
             if ($this->model->isNewRecord == FALSE)
             {
-                return ['view', 'update', 'delete', 'restore'];
+                return $this->actionPersistentModel();
             }
         }
 
+        return $this->actionUnspecifiedModel();
+    }
+
+    /**
+     * list action for persistent model / DB record
+     *
+     * @return array
+     */
+    public function actionPersistentModel()
+    {
+        return ['view', 'update', 'delete', 'restore'];
+    }
+
+    /**
+     * list action for unspecified/unsaved model
+     *
+     * @return array
+     */
+    public function actionUnspecifiedModel()
+    {
         return ['index', 'create', 'deleted'];
     }
 
