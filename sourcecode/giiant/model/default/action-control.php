@@ -32,7 +32,10 @@ if ($namespaceCount > 2) {
 
 namespace <?= $generator->actionNs ?>;
 
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use cornernote\returnurl\ReturnUrl;
+use kartik\icons\Icon;
 use <?= $generator->ns . '\\' . $className ?>;
 
 /**
@@ -59,22 +62,107 @@ class <?= $className ?>ActControl extends \fredyns\suite\libraries\ActionControl
     public function breadcrumbLabels()
     {
         return ArrayHelper::merge(
-                parent::breadcrumbLabels(), [
+            parent::breadcrumbLabels(),
+            [
                 'index' => '<?= $className ?>',
+            ]
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function actionPersistentModel()
+    {
+        return ArrayHelper::merge(
+                parent::actionPersistentModel(),
+                [
+                    #  additional action name
                 ]
         );
     }
 
-<?php if ($tableSchema->getColumn('deleted_at') !== null): ?>
+    /**
+     * @inheritdoc
+     */
+    public function actionUnspecifiedModel()
+    {
+        return ArrayHelper::merge(
+                parent::actionUnspecifiedModel(),
+                [
+                    # additional action name
+                ]
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return ArrayHelper::merge(
+                parent::actions(),
+                [
+                /* / action sample / */
+                
+                # 'action_name' => [
+                #     'label'         => 'Action_Label',
+                #     'url'           => $this->urlAction,
+                #     'icon'          => Icon::show('star'),
+                #     'linkOptions'   => [
+                #         'title'      => 'click to do action',
+                #         'aria-label' => 'Action_Label',
+                #         'data-pjax'  => '0',
+                #     ],
+                #     'buttonOptions' => [
+                #         'class' => 'btn btn-default',
+                #     ],
+                # ],
+                ]
+        );
+    }
+
+    <?php if ($tableSchema->getColumn('deleted_at') !== null): ?>
     /**
      * check permission to access Deleted page
      *
      * @return boolean
      */
-    public function getAllowDeleted()
+    public function getAllowDeleted($params = [])
     {
         return true;
     }
-<?php endif; ?>
+    <?php endif; ?>
+
+    ################################ sample : additional action ################################ 
+
+    /**
+     * get URL param to do action
+     *
+     * @return array
+     */
+    public function getUrlAction()
+    {
+        if ($this->model instanceof ActiveRecord)
+        {
+            $param       = $this->modelParam();
+            $param[0]    = $this->actionRoute('action_slug');
+            $param['ru'] = ReturnUrl::getToken();
+
+            return $param;
+        }
+
+        return [];
+    }
+
+    /**
+     * check permission to do action
+     *
+     * @return boolean
+     */
+    public function getAllowAction($params = [])
+    {
+        return true;
+    }
 
 }
