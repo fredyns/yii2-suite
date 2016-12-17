@@ -43,13 +43,14 @@ use dmstr\bootstrap\Tabs;
     true
 ) ?>-form">
 
-    <?= '<?php ' ?>$form = ActiveForm::begin([
-    'id' => '<?= $model->formName() ?>',
-    'layout' => '<?= $generator->formLayout ?>',
-    'enableClientValidation' => true,
-    'errorSummaryCssClass' => 'error-summary alert alert-error'
-    ]
-    );
+    <?= "<?php\n" ?>
+    $form = ActiveForm::begin([
+        'id' => '<?= $model->formName() ?>',
+        'layout' => '<?= $generator->formLayout ?>',
+        'enableClientValidation' => true,
+        'errorSummaryCssClass' => 'error-summary alert alert-error'
+    ]);
+    
     echo Html::hiddenInput('ru', ReturnUrl::getRequestToken());
     ?>
 
@@ -73,68 +74,71 @@ use dmstr\bootstrap\Tabs;
         $safeAttributes = array_diff($safeAttributes, $hidenAttributes);
 
             foreach ($safeAttributes as $attribute) {
-                echo "\n\n<!-- attribute $attribute -->";
+                echo "\n\n            <!-- attribute {$attribute} -->";
                 $prepend = $generator->prependActiveField($attribute, $model);
                 $field = $generator->activeField($attribute, $model);
                 $append = $generator->appendActiveField($attribute, $model);
 
                 if ($prepend) {
-                    echo "\n\t\t\t".$prepend;
+                    echo "\n            ".$prepend;
                 }
+
                 if ($field) {
-                    echo "\n\t\t\t<?= ".$field.' ?>';
+                    echo "\n            <?=\n            "
+                    .str_replace("\n", "\n            ", $field)
+                    ."\n            ?>";
                 }
+
                 if ($append) {
-                    echo "\n\t\t\t".$append;
+                    echo "\n            ".$append;
                 }
             }
             ?>
 
         </p>
+
         <?php echo '<?php $this->endBlock(); ?>'; ?>
 
         <?php
         $label = substr(strrchr($model::className(), '\\'), 1);
 
         $items = <<<EOS
-[
-    'label'   => Yii::t('$generator->modelMessageCategory', '$label'),
-    'content' => \$this->blocks['main'],
-    'active'  => true,
-],
+                [
+                    'label'   => Yii::t('$generator->modelMessageCategory', '$label'),
+                    'content' => \$this->blocks['main'],
+                    'active'  => true,
+                ],
 EOS;
         ?>
 
         <?=
         "<?=
-    Tabs::widget(
-                 [
-                    'encodeLabels' => false,
-                    'items' => [ 
-                        $items
-                    ]
-                 ]
-    );
-    ?>";
+        Tabs::widget([
+            'encodeLabels' => false,
+            'items' => [\n$items
+            ],
+        ]);
+        ?>\n";
         ?>
 
         <hr/>
 
         <?= '<?php ' ?>echo $form->errorSummary($model); ?>
 
-        <?= '<?= ' ?>Html::submitButton(
-        '<span class="glyphicon glyphicon-check"></span> ' .
-        ($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Save') ?>),
-        [
-        'id' => 'save-' . $model->formName(),
-        'class' => 'btn btn-success'
-        ]
+        <?= "<?php\n" ?>
+        Html::submitButton(
+            '<span class="glyphicon glyphicon-check"></span> ' .
+            ($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Save') ?>),
+            [
+            'id' => 'save-' . $model->formName(),
+            'class' => 'btn btn-success'
+            ]
         );
         ?>
 
-        <?= '<?php ' ?>ActiveForm::end(); ?>
-
     </div>
+
+    <?= '<?php ' ?>ActiveForm::end(); ?>
 
 </div>
 

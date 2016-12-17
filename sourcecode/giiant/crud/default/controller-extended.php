@@ -10,8 +10,8 @@ namespace <?= \yii\helpers\StringHelper::dirname(ltrim($generator->controllerCla
 use fredyns\suite\filters\AdminLTELayout;
 
 /**
-* This is the class for controller "<?= $controllerClassName ?>".
-*/
+ * This is the class for controller "<?= $controllerClassName ?>".
+ */
 class <?= $controllerClassName ?> extends <?= (isset($generator->controllerNs) ? '\\'.$generator->controllerNs.'\\' : '') .'base\\'.$controllerClassName."\n" ?>
 {
     public function behaviors()
@@ -22,6 +22,5 @@ class <?= $controllerClassName ?> extends <?= (isset($generator->controllerNs) ?
             ],
         ];
     }
-
 
 }

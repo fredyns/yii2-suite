@@ -11,50 +11,52 @@ $actControlClass = str_replace('Controller', 'ActControl', $controllerClassName)
 namespace <?= $generator->controllerNs ?>\api;
 
 /**
-* This is the class for REST controller "<?= $controllerClassName ?>".
-* empowered with logic base access control
-*/
+ * This is the class for REST controller "<?= $controllerClassName ?>".
+ * empowered with logic base access control
+ */
 
+use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use <?= $actControlNamespace.'\\'.$actControlClass ?>;
 
 class <?= $controllerClassName ?> extends \yii\rest\ActiveController
 {
-public $modelClass = '<?= $generator->modelClass ?>';
-<?php if ($generator->accessFilter): ?>
+    public $modelClass = '<?= $generator->modelClass ?>';
+
+    <?php if ($generator->accessFilter): ?>
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public function behaviors()
     {
-    return ArrayHelper::merge(
-    parent::behaviors(),
-    [
-    'access' => [
-    'class' => AccessControl::className(),
-    'rules' => [
-    [
-    'allow' => true,
-    'matchCallback' => function ($rule, $action) {return \Yii::$app->user->can($this->module->id . '_' . $this->id . '_' . $action->id, ['route' => true]);},
-    ]
-    ]
-    ]
-    ]
-    );
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'matchCallback' => function ($rule, $action) {
+                                return Yii::$app->user->can($this->module->id . '_' . $this->id . '_' . $action->id, ['route' => true]);
+                            },
+                        ],
+                    ],
+                ],
+            ]
+        );
     }
-<?php endif; ?>
+    <?php endif; ?>
 
     /**
      * @inheritdoc
      */
     public function checkAccess($action, $model = null, $params = [])
     {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
-        $actControl = new <?= $actControlClass ?>(['model' => $model]);
-
-        $actControl->checkAccess($action);
+        <?= $actControlClass ?>::checkAccess($action, $model, $params);        
     }
 
 }

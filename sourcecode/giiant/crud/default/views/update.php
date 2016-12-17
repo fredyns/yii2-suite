@@ -22,9 +22,9 @@ use yii\helpers\Url;
 use cornernote\returnurl\ReturnUrl;
 
 /**
-* @var yii\web\View $this
-* @var <?= ltrim($generator->modelClass, '\\') ?> $model
-*/
+ * @var yii\web\View $this
+ * @var <?= ltrim($generator->modelClass, '\\') ?> $model
+ */
     
 $this->title = $actionControl->breadcrumbLabel('index')." "
     .$actionControl->breadcrumbLabel('view').', '
@@ -40,8 +40,10 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('update');
         <?= "<?= Yii::t('{$generator->modelMessageCategory}', '{$modelName}') ?>" ?>
 
         <small>
-            <?php $label = StringHelper::basename($generator->modelClass); ?>
-            <?= '<?= $model->'.$generator->getModelNameAttribute($generator->modelClass)." ?>\n" ?>
+            <?php 
+            $label = StringHelper::basename($generator->modelClass); 
+            echo '<?= $model->'.$generator->getModelNameAttribute($generator->modelClass)." ?>\n";
+            ?>
         </small>
     </h1>
 
@@ -52,8 +54,6 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('update');
 
     <hr />
 
-    <?= '<?php ' ?>echo $this->render('_form', [
-    'model' => $model,
-    ]); ?>
+    <?= '<?= ' ?>$this->render('_form', ['model' => $model]); ?>
 
 </div>

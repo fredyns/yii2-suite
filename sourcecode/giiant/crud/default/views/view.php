@@ -58,13 +58,13 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('view');
         <small>
             <?= '<?= $model->'.$generator->getModelNameAttribute($generator->modelClass)." ?>\n" ?>
 
-<?php if (in_array('fredyns\suite\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
+            <?php if (in_array('fredyns\suite\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
 
             <?= "<?php" ?> if ($model->recordStatus == 'deleted'): ?>
                 <span class="badge">deleted</span>
             <?= "<?php" ?> endif; ?>
             
-<?php endif; ?>
+            <?php endif; ?>
 
         </small>
     </h1>
@@ -91,37 +91,37 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('view');
 
     <?= $generator->partialView('detail_prepend', $model); ?>
 
-    <?= '<?= ' ?>DetailView::widget([
-    'model' => $model,
-    'attributes' => [
-    <?php
+    <?= "<?= \n" ?>
+    DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+<?php
+            $systemAttributes = [
+                'recordStatus',
+                'created_at',
+                'created_by',
+                'updated_at',
+                'updated_by',
+                'deleted_at',
+                'deleted_by',
+            ];
+            $infoAttributes = array_intersect((new $generator->modelClass)->attributes(), $systemAttributes);
+            $systemAttributes[] = 'id';
+            $safeAttributes = array_diff($safeAttributes, $systemAttributes);
 
-    $systemAttributes = [
-        'recordStatus',
-        'created_at',
-        'created_by',
-        'updated_at',
-        'updated_by',
-        'deleted_at',
-        'deleted_by',
-    ];
+            foreach ($safeAttributes as $attribute) {
+                $format = $generator->attributeFormat($attribute);
 
-    $infoAttributes = array_intersect((new $generator->modelClass)->attributes(), $systemAttributes);
-
-$systemAttributes[] = 'id';
-    $safeAttributes     = array_diff($safeAttributes, $systemAttributes);
-
-    foreach ($safeAttributes as $attribute) {
-        $format = $generator->attributeFormat($attribute);
-        if (!$format) {
-            continue;
-        } else {
-            echo $format.",\n";
-        }
-    }
+                if (!$format) {
+                    continue;
+                } else {
+                    echo "    ".$format.",\n";
+                }
+            }
+            ?>
+        ],
+    ]);
     ?>
-    ],
-    ]); ?>
 
     <?= $generator->partialView('detail_append', $model); ?>
 
@@ -133,20 +133,19 @@ $systemAttributes[] = 'id';
     $model = new $generator->modelClass();
 
     $items = <<<EOS
-[
-    'label'   => '<b class=""># '.\$model->{$model->primaryKey()[0]}.'</b>',
-    'content' => \$this->blocks['{$generator->modelClass}'],
-    'active'  => true,
-],
-
+            [
+                'label' => '<b class=""># '.\$model->{$model->primaryKey()[0]}.'</b>',
+                'content' => \$this->blocks['{$generator->modelClass}'],
+                'active' => true,
+            ],\n
 EOS;
 
-        // formulate action controls
-        $actControlNamespace = StringHelper::dirname(ltrim($generator->controllerClass, '\\'));
-        $actControlNamespace = str_replace('controllers', 'actioncontrols', $actControlNamespace);
+    // formulate action controls
+    $actControlNamespace = StringHelper::dirname(ltrim($generator->controllerClass, '\\'));
+    $actControlNamespace = str_replace('controllers', 'actioncontrols', $actControlNamespace);
 
     foreach ($generator->getModelRelations($generator->modelClass, ['has_many']) as $name => $relation) {
-        echo "\n<?php \$this->beginBlock('$name'); ?>\n";
+        echo "\n    <?php \$this->beginBlock('$name'); ?>\n\n";
 
         $showAllRecords = false;
 
@@ -165,27 +164,43 @@ EOS;
 
         // render relation grid
         if (!empty($output)):
-            echo "<?php Pjax::begin(['id'=>'pjax-{$name}', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-{$name} ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert(\"yo\")}']]) ?>\n";
-            echo "<?php\n ".$output."\n?>\n";
-            echo "<?php Pjax::end() ?>\n";
+            $output = str_replace("\n", "\n    ", $output);
+
+            echo <<<EOS
+    <?php 
+    Pjax::begin([
+        'id'=>'pjax-{$name}', 
+        'enableReplaceState'=> false, 
+        'linkSelector'=>'#pjax-{$name} ul.pagination a, th a', 
+        'clientOptions' => [
+            'pjax:success'=>'function(){alert(\"yo\")}',
+        ],
+    ]);
+    {$output}
+
+    Pjax::end();
+    ?>\n\n
+EOS;
         endif;
 
-        echo "<?php \$this->endBlock() ?>\n\n";
+        echo "    <?php \$this->endBlock() ?>\n\n";
 
         // build tab items
         $label = Inflector::camel2words($name);
         $items .= <<<EOS
-[
-    'content' => \$this->blocks['$name'],
-    'label'   => '<small>$label <span class="badge badge-default">'.count(\$model->get{$name}()->asArray()->all()).'</span></small>',
-    'active'  => false,
-],\n
+            [
+                'content' => \$this->blocks['$name'],
+                'label' => '<small>$label <span class="badge badge-default">'
+                    .count(\$model->get{$name}()->asArray()->all())
+                    .'</span></small>',
+                'active' => false,
+            ],\n
 EOS;
     }
 
     if (empty($infoAttributes) == false)
     {
-        echo "<?php \$this->beginBlock('info'); ?>\n";
+        echo "    <?php \$this->beginBlock('info'); ?>\n";
         echo <<<EOS
     <?=
     DetailView::widget([
@@ -199,8 +214,8 @@ EOS;
             echo <<<EOS
             [
                 'attribute' => 'recordStatus',
-                'format'    => 'html',
-                'value'     => '<span class="badge">'.\$model->recordStatus.'</span>',
+                'format' => 'html',
+                'value' => '<span class="badge">'.\$model->recordStatus.'</span>',
             ],\n
 EOS;
         }
@@ -209,8 +224,8 @@ EOS;
         {
             echo <<<EOS
             [
-                'label'     => 'Created',
-                'blamed'    => 'createdBy',
+                'label' => 'Created',
+                'blamed' => 'createdBy',
                 'timestamp' => 'created_at',
             ],\n
 EOS;
@@ -220,8 +235,8 @@ EOS;
         {
             echo <<<EOS
             [
-                'label'     => 'Updated',
-                'blamed'    => 'updatedBy',
+                'label' => 'Updated',
+                'blamed' => 'updatedBy',
                 'timestamp' => 'updated_at',
             ],\n
 EOS;
@@ -231,8 +246,8 @@ EOS;
         {
             echo <<<EOS
             [
-                'label'     => 'Deleted',
-                'blamed'    => 'deletedBy',
+                'label' => 'Deleted',
+                'blamed' => 'deletedBy',
                 'timestamp' => 'deleted_at',
             ],\n
 EOS;
@@ -241,31 +256,29 @@ EOS;
         echo <<<EOS
         ],
     ]);
-    ?>
+    ?>\n
 EOS;
-        echo "<?php \$this->endBlock(); ?>\n\n";
+        echo "    <?php \$this->endBlock(); ?>\n\n";
 
     $items .= <<<EOS
-[
-    'content' => \$this->blocks['info'],
-    'label'   => '<small>info</small>',
-    'active'  => false,
-    'visible'  => ActiveUser::isAdmin(),
-],\n
+            [
+                'content' => \$this->blocks['info'],
+                'label' => '<small>info</small>',
+                'active' => false,
+                'visible' => ActiveUser::isAdmin(),
+            ],\n
 EOS;
     }
     ?>
 
-    <?=
-    // render tabs
-    "<?= Tabs::widget(
-                 [
-                     'id' => 'relation-tabs',
-                     'encodeLabels' => false,
-                     'items' => [\n $items ]
-                 ]
-    );
-    ?>";
+    <?= "<?= \n"; ?>
+    Tabs::widget([
+        'id' => 'relation-tabs',
+        'encodeLabels' => false,
+        'items' => [
+<?= $items; ?>
+        ],
+    ]);
     ?>
-    
+
 </div>

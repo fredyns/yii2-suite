@@ -9,9 +9,7 @@ use yii\helpers\StringHelper;
 
 $modelClass = StringHelper::basename($generator->modelClass);
 $searchModelClass = StringHelper::basename($generator->searchModelClass);
-if ($modelClass === $searchModelClass) {
-    $modelAlias = $modelClass.'Model';
-}
+$modelAlias = ($modelClass === $searchModelClass)?$modelClass.'Model':false;
 $rules = $generator->generateSearchRules();
 $labels = $generator->generateSearchLabels();
 $searchAttributes = $generator->getSearchAttributes();
@@ -27,32 +25,31 @@ namespace <?= StringHelper::dirname(ltrim($generator->searchModelClass, '\\')) ?
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use <?= ltrim($generator->modelClass, '\\').(isset($modelAlias) ? " as $modelAlias" : '') ?>;
+use <?= ltrim($generator->modelClass, '\\').(($modelAlias) ? " as $modelAlias" : '') ?>;
 
 /**
-* <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
-*/
-class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $modelClass ?>
+ * <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
+ */
+class <?= $searchModelClass ?> extends <?= ($modelAlias) ? $modelAlias : $modelClass ?>
+{
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            <?= implode(",\n            ", $rules) ?>,
+        ];
+    }
 
-{
-/**
-* @inheritdoc
-*/
-public function rules()
-{
-return [
-<?= implode(",\n            ", $rules) ?>,
-];
-}
-
-/**
-* @inheritdoc
-*/
-public function scenarios()
-{
-// bypass scenarios() implementation in the parent class
-return Model::scenarios();
-}
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
 
     /**
      * search models
@@ -61,20 +58,18 @@ return Model::scenarios();
      * 
      * @return ActiveDataProvider
      */
-    public function index($params)
+    public function searchIndex($params)
     {
         $this->load($params);
 
 <?php if ($softDelete): ?>
-
         $this->recordStatus = static::RECORDSTATUS_ACTIVE;
-
 <?php endif; ?>
 
         return $this->search();
     }
 
-<?php if ($softDelete): ?>
+    <?php if ($softDelete): ?>
 
     /**
      * search deleted models
@@ -83,7 +78,7 @@ return Model::scenarios();
      *
      * @return ActiveDataProvider
      */
-    public function deleted($params)
+    public function searchDeleted($params)
     {
         $this->load($params);
 
@@ -92,34 +87,34 @@ return Model::scenarios();
         return $this->search();
     }
 
-<?php endif; ?>
+    <?php endif; ?>
 
-/**
-* Creates data provider instance with search query applied
-*
-* @param array $params
-*
-* @return ActiveDataProvider
-*/
-public function search()
-{
-$query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find();
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search()
+    {
+        $query = <?= ($modelAlias) ? $modelAlias : $modelClass ?>::find();
 
-$dataProvider = new ActiveDataProvider([
-        'query' => $query,
-        'pagination' => [
-            'pageSize' => 50,
-        ],
-]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
 
-if (!$this->validate()) {
-// uncomment the following line if you do not want to any records when validation fails
-// $query->where('0=1');
-return $dataProvider;
-}
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
 
-<?= implode("\n        ", $searchConditions) ?>
+        <?= str_replace("\$query->", "\$query\n            ->", implode("\n        ", $searchConditions)); ?>
 
-return $dataProvider;
-}
+        return $dataProvider;
+    }
 }

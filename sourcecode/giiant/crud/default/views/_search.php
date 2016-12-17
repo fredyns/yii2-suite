@@ -23,12 +23,14 @@ use yii\widgets\ActiveForm;
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-search">
 
-    <?= '<?php ' ?>$form = ActiveForm::begin([
-    'action' => ['index'],
-    'method' => 'get',
-    ]); ?>
+    <?= "<?php\n" ?>
+    $form = ActiveForm::begin([
+        'action' => ['index'],
+        'method' => 'get',
+    ]); 
+    ?>
 
-    <?php
+<?php
     $count = 0;
 
     $hidenAttributes = [
@@ -49,9 +51,9 @@ use yii\widgets\ActiveForm;
         }
 
         if (++$count < 6) {
-            echo "\t\t<?= ".$generator->generateActiveSearchField($attribute)." ?>\n\n";
+            echo "    <?= ".$generator->generateActiveSearchField($attribute)." ?>\n\n";
         } else {
-            echo "\t\t<?php // echo ".$generator->generateActiveSearchField($attribute)." ?>\n\n";
+            echo "    <?php // echo ".$generator->generateActiveSearchField($attribute)." ?>\n\n";
         }
     }
     ?>

@@ -42,18 +42,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="clearfix crud-navigation">
         <div class="pull-left">
-            <?= '<?= ' ?>
-            Html::a(
-            <?= $generator->generateString('Cancel') ?>,
-            ReturnUrl::getUrl(Url::previous()),
-            ['class' => 'btn btn-default']) ?>
+            <?= "<?php\n" ?>
+            Html::a(<?= $generator->generateString('Cancel') ?>, ReturnUrl::getUrl(Url::previous()), ['class' => 'btn btn-default']); ?>
         </div>
     </div>
 
     <hr />
 
-    <?= '<?= ' ?>$this->render('_form', [
-    'model' => $model,
-    ]); ?>
+    <?= '<?= ' ?>$this->render('_form', ['model' => $model]); ?>
 
 </div>
