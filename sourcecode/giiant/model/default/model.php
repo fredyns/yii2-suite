@@ -51,21 +51,18 @@ use yii\behaviors\TimestampBehavior;
  */
 abstract class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
+    <?php
+        $traits = $generator->baseTraits;
+    
+        if ($traits) {
+            echo "use {$traits};";
+        }
+    ?>
+    <?php if(!empty($enum)): ?>
 
-<?php
-    $traits = $generator->baseTraits;
-    if ($traits) {
-        echo "use {$traits};";
-    }
-?>
-
-
-<?php
-if(!empty($enum)){
-?>
     /**
-    * ENUM field values
-    */
+     * ENUM field values
+     */
 <?php
     foreach($enum as $column_name => $column_data){
         foreach ($column_data['values'] as $enum_value){
@@ -74,9 +71,8 @@ if(!empty($enum)){
     }
 ?>
     var $enum_labels = false;
-<?php
-}
-?>
+    <?php endif; ?>
+
     /**
      * @inheritdoc
      */
@@ -84,8 +80,7 @@ if(!empty($enum)){
     {
         return '<?= $tableName ?>';
     }
-
-<?php if (isset($translation) || !empty($blameable) || !empty($timestamp)): ?>
+    <?php if (isset($translation) || !empty($blameable) || !empty($timestamp)): ?>
 
     /**
      * @inheritdoc
@@ -146,26 +141,32 @@ if(!empty($enum)){
     public function attributeLabels()
     {
         return [
-<?php foreach ($labels as $name => $label): ?>
-            <?= "'$name' => " . str_replace(' ID', '', $generator->generateString($label)) . ",\n" ?>
-<?php endforeach; ?>
+<?php 
+foreach ($labels as $name => $label){
+    echo "            '$name' => ".str_replace(' ID', '', $generator->generateString($label)).",\n";
+}
+?>
         ];
     }
-<?php if (!empty($hints)): ?>
+    <?php if (!empty($hints)): ?>
 
     /**
      * @inheritdoc
      */
     public function attributeHints()
     {
-        return array_merge(parent::attributeHints(), [
+        return array_merge(
+            parent::attributeHints(), 
+            [
 <?php foreach ($hints as $name => $hint): ?>
             <?= "'$name' => " . $generator->generateString($hint) . ",\n" ?>
 <?php endforeach; ?>
-        ]);
+            ]
+        );
     }
-<?php endif; ?>
-<?php foreach ($relations as $name => $relation): ?>
+    <?php endif; ?>
+
+    <?php foreach ($relations as $name => $relation): ?>
 
     /**
      * @return \yii\db\ActiveQuery
@@ -174,9 +175,9 @@ if(!empty($enum)){
     {
         <?= $relation[0] . "\n" ?>
     }
-<?php endforeach; ?>
+    <?php endforeach; ?>
 
-<?php if (isset($translation)): ?>
+    <?php if (isset($translation)): ?>
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -184,9 +185,9 @@ if(!empty($enum)){
     {
         <?= $translation['code'] . "\n"?>
     }
-<?php endif; ?>
+    <?php endif; ?>
 
-<?php if ($queryClassName): ?>
+    <?php if ($queryClassName): ?>
     <?php
     $queryClassFullName = ($generator->ns .'\\base' === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
@@ -199,11 +200,9 @@ if(!empty($enum)){
     {
         return new <?= $queryClassFullName ?>(get_called_class());
     }
-<?php endif; ?>
+    <?php endif; ?>
 
-<?php
-    foreach($enum as $column_name => $column_data){
-?>
+    <?php foreach($enum as $column_name => $column_data): ?>
 
     /**
      * get column <?php echo $column_name?> enum value label
@@ -212,9 +211,11 @@ if(!empty($enum)){
      */
     public static function <?php echo $column_data['func_get_label_name']?>($value){
         $labels = self::<?php echo $column_data['func_opts_name']?>();
+
         if(isset($labels[$value])){
             return $labels[$value];
         }
+
         return $value;
     }
 
@@ -226,20 +227,16 @@ if(!empty($enum)){
     {
         return [
 <?php
-        foreach($column_data['values'] as $k => $value){
-            if ($generator->enableI18N) {
-                echo '            '.'self::' . $value['const_name'] . ' => Yii::t(\'' . $generator->messageCategory . '\', self::' . $value['const_name'] . "),\n";
-            } else {
-                echo '            '.'self::' . $value['const_name'] . ' => self::' . $value['const_name'] . ",\n";
+            foreach($column_data['values'] as $k => $value){
+                if ($generator->enableI18N) {
+                    echo '            '.'self::' . $value['const_name'] . ' => Yii::t(\'' . $generator->messageCategory . '\', self::' . $value['const_name'] . "),\n";
+                } else {
+                    echo '            '.'self::' . $value['const_name'] . ' => self::' . $value['const_name'] . ",\n";
+                }
             }
-        }
 ?>
         ];
     }
-<?php
-    }
-
-
-?>
+    <?php endforeach; ?>
 
 }
