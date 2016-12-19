@@ -92,7 +92,7 @@ echo '?>';
 
     <?php if ($generator->indexWidgetType === 'grid'): ?>
 
-    <?= "<?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert(\"yo\")}']]) ?>\n"; ?>
+    <?= "<?php \yii\widgets\Pjax::begin(['id' => 'pjax-main', 'enableReplaceState' => false, 'linkSelector' => '#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert(\"yo\")}']]) ?>\n"; ?>
 
     <h1>
         <?= "<?= Yii::t('{$generator->messageCategory}', '{$modelName}') ?>" ?>
@@ -195,7 +195,7 @@ PHP;
             'filterModel' => $searchModel,
         <?php endif; ?>
         'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
-        'headerRowOptions' => ['class'=>'x'],
+        'headerRowOptions' => ['class' => 'x'],
         'columns' => [
 
         <?php
@@ -209,7 +209,7 @@ PHP;
                 \$params[0] = \Yii::\$app->controller->id ? \Yii::\$app->controller->id . '/' . \$action : \$action;
                 return Url::toRoute(\$params);
             },
-            'contentOptions' => ['nowrap'=>'nowrap']
+            'contentOptions' => ['nowrap' => 'nowrap']
         ],
 PHP;
 

@@ -266,7 +266,7 @@ foreach($accessDefinitions['roles'] as $roleName => $actions){
         // use Yii's response format to encode output as JSON
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;        
         if(!$post){
-            return ['output'=>'', 'message'=> <?=$generator->generateString('Can not update this field') ?>];
+            return ['output' => '', 'message' => <?=$generator->generateString('Can not update this field') ?>];
         }
 
         $model = $this->findModel(<?= $actionParams ?>);
@@ -277,14 +277,14 @@ foreach($accessDefinitions['roles'] as $roleName => $actions){
             $value = $model->$name;
 
             // return JSON encoded output in the below format
-            return ['output'=>$value, 'message'=>''];
+            return ['output' =>$value, 'message' => ''];
 
             // alternatively you can return a validation error
-            // return ['output'=>'', 'message'=><?=$generator->generateString('Validation error') ?>];
+            // return ['output' => '', 'message' => <?=$generator->generateString('Validation error') ?>];
         }
         // else if nothing to do always return an empty JSON encoded output
         else {
-            //  return ['output'=>'', 'message'=>''];
+            //  return ['output' => '', 'message' => ''];
             $errors = [];
             foreach($model->errors as $field => $messages){
                 foreach($messages as $message){
@@ -293,7 +293,7 @@ foreach($accessDefinitions['roles'] as $roleName => $actions){
                             . $message;
                 }
             }
-            return ['output'=>'', 'message'=>implode('<br>',$errors)];
+            return ['output' => '', 'message' => implode('<br>',$errors)];
             
         }
         

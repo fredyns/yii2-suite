@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 
             <?= '<?= ' ?>Html::a(
             '<span class="glyphicon glyphicon-copy"></span> ' . <?= $generator->generateString('Copy') ?>,
-            ['create', <?= $urlParams ?>, '<?= StringHelper::basename($generator->modelClass) ?>'=>$copyParams],
+            ['create', <?= $urlParams ?>, '<?= StringHelper::basename($generator->modelClass) ?>' => $copyParams],
             ['class' => 'btn btn-success']) ?>
 
             <?= '<?= ' ?>Html::a(
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 
         <div class="pull-right">
             <?= "<?= " ?>Html::a('<span class="glyphicon glyphicon-list"></span> '
-            . <?= $generator->generateString('Full list') ?>, ['index'], ['class'=>'btn btn-default']) ?>
+            . <?= $generator->generateString('Full list') ?>, ['index'], ['class' => 'btn btn-default']) ?>
         </div>
 
     </div>
@@ -171,10 +171,10 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
             '<span class=\"glyphicon glyphicon-link\"></span> ' . ".$generator->generateString('Attach')." . ' ".
                 Inflector::singularize(Inflector::camel2words($name)).
                 "', ['".$generator->createRelationRoute($pivotRelation, 'create')."', '".
-                Inflector::singularize($pivotName)."'=>['".key(
+                Inflector::singularize($pivotName)."' => ['".key(
                     $pivotRelation->link
-                )."'=>\$model->{$model->primaryKey()[0]}]],
-            ['class'=>'btn btn-info btn-xs']
+                )."' => \$model->{$model->primaryKey()[0]}]],
+            ['class' => 'btn btn-info btn-xs']
         ) ?>\n";
         } else {
             $addButton = '';
@@ -193,20 +193,20 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
                         '<span class=\"glyphicon glyphicon-list\"></span> ' . ".$generator->generateString('List All')." . ' ".
                         Inflector::camel2words($name)."',
                         ['".$generator->createRelationRoute($relation, 'index')."'],
-                        ['class'=>'btn text-muted btn-xs']
+                        ['class' => 'btn text-muted btn-xs']
                         ) ?>
                         <?= Html::a(
                             '<span class=\"glyphicon glyphicon-plus\"></span> ' . ".$generator->generateString('New').",
                             ['".$generator->createRelationRoute($relation, 'create')."', '".
                             $gridModel->formName()."' => ['".key($relation->link)."' => \$model->".$model->primaryKey()[0]."]],
-                            ['class'=>'btn btn-success btn-xs']
+                            ['class' => 'btn btn-success btn-xs']
                         ); 
                         ?>
                         <?= Html::a(
                             '<span class=\"glyphicon glyphicon-plus\"></span> ' . ".$generator->generateString('Add row').",
                             ['".$generator->createRelationRoute($relation, 'create-for-rel')."', '".
                             $gridModel->formName()."' => ['".key($relation->link)."' => \$model->".$model->primaryKey()[0]."]],
-                            ['class'=>'btn btn-success btn-xs']
+                            ['class' => 'btn btn-success btn-xs']
                         );?>
                         " . $addButton . " 
                     </div>
@@ -217,7 +217,7 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('View') ?>;
 
         // render relation grid
         if (!empty($output)):
-            echo "<?php Pjax::begin(['id'=>'pjax-{$name}', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-{$name} ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert(\"yo\")}']]) ?>\n";
+            echo "<?php Pjax::begin(['id' => 'pjax-{$name}', 'enableReplaceState' => false, 'linkSelector' => '#pjax-{$name} ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert(\"yo\")}']]) ?>\n";
             echo '    <div class="table-responsive">'.PHP_EOL;    
             echo '        <?php '.$output."?>\n";
             echo '    </div>'.PHP_EOL;

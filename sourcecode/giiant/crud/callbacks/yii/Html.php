@@ -4,6 +4,7 @@ namespace schmunk42\giiant\generators\crud\callbacks\yii;
 
 class Html
 {
+
     public static function column()
     {
         // render HTML in grid columns
@@ -12,7 +13,7 @@ class Html
 [
     'format' => 'html',
     'attribute' => '{$attribute}',
-    'value'=> function(\$model){
+    'value' => function(\$model){
         return html_entity_decode(\$model->{$attribute});
     }
 ]

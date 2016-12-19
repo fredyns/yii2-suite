@@ -5,6 +5,7 @@
  * Date: 09.06.15
  * Time: 22:40.
  */
+
 namespace schmunk42\giiant\generators\crud\callbacks\devgroup;
 
 use dmstr\modules\widgets\helpers\StringFormatter;
@@ -12,6 +13,7 @@ use yii\bootstrap\Collapse;
 
 class Jsoneditor
 {
+
     public static function field()
     {
         return function ($attribute) {
@@ -50,7 +52,7 @@ FORMAT;
 [
     'format' => 'html',
     'attribute' => '{$attribute}',
-    'value'=> {$formattter}::contentJsonToHtml(\$model->{$attribute})
+    'value' => \\{$formattter}::contentJsonToHtml(\$model->{$attribute})
 
 ]
 FORMAT;
