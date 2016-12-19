@@ -208,7 +208,7 @@ EOS;
 //[
 //    'class'      => '{$this->generator->actionButtonClass}',
 //    'template'   => '$template',
-//    'contentOptions' => ['nowrap'=>'nowrap'],
+//    'contentOptions' => ['nowrap' => 'nowrap'],
 //    'urlCreator' => function (\$action, \$model, \$key, \$index) {
 //        // using the column name as key, not mapping to 'id' like the standard generator
 //        \$params = is_array(\$key) ? \$key : [\$model->primaryKey()[0] => (string) \$key];
@@ -434,7 +434,7 @@ EOS;
             echo GridView::widget([
                 'layout' => '{items}{pager}',
                 'export' => false,                
-                'dataProvider' => new \\yii\\data\\ActiveDataProvider([{$query}, 'pagination' => ['pageSize' => 20, 'pageParam'=>'{$pageParam}']]),
+                'dataProvider' => new \\yii\\data\\ActiveDataProvider([{$query}, 'pagination' => ['pageSize' => 20, 'pageParam' => '{$pageParam}']]),
                 'export' => false,
                 'tableOptions' => [
                     'class' => 'table table-striped table-success'
