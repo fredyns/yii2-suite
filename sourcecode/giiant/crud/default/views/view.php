@@ -40,9 +40,9 @@ use fredyns\suite\widgets\DetailView;
 use kartik\grid\GridView;
 
 /**
-* @var yii\web\View $this
-* @var <?= ltrim($generator->modelClass, '\\') ?> $model
-*/
+ * @var yii\web\View $this
+ * @var <?= ltrim($generator->modelClass, '\\') ?> $model
+ */
 $copyParams = $model->attributes;
 
 $this->title = $actionControl->breadcrumbLabel('index')." "
@@ -111,11 +111,12 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('view');
 
             foreach ($safeAttributes as $attribute) {
                 $format = $generator->attributeFormat($attribute);
+                $format = str_replace("\n", "\n            ", $format);
 
                 if (!$format) {
                     continue;
                 } else {
-                    echo "    ".$format.",\n";
+                    echo "            ".trim($format).",\n";
                 }
             }
             ?>
@@ -169,13 +170,14 @@ EOS;
             echo <<<EOS
     <?php 
     Pjax::begin([
-        'id'=>'pjax-{$name}', 
-        'enableReplaceState'=> false, 
-        'linkSelector'=>'#pjax-{$name} ul.pagination a, th a', 
+        'id' => 'pjax-{$name}', 
+        'enableReplaceState' => false, 
+        'linkSelector' => '#pjax-{$name} ul.pagination a, th a', 
         'clientOptions' => [
-            'pjax:success'=>'function(){alert(\"yo\")}',
+            'pjax:success' => 'function(){alert(\"yo\")}',
         ],
     ]);
+
     {$output}
 
     Pjax::end();

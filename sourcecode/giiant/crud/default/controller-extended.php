@@ -14,6 +14,9 @@ use fredyns\suite\filters\AdminLTELayout;
  */
 class <?= $controllerClassName ?> extends <?= (isset($generator->controllerNs) ? '\\'.$generator->controllerNs.'\\' : '') .'base\\'.$controllerClassName."\n" ?>
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [

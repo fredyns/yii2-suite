@@ -31,6 +31,7 @@ use <?= ltrim($generator->modelClass, '\\').(($modelAlias) ? " as $modelAlias" :
  * <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
  */
 class <?= $searchModelClass ?> extends <?= ($modelAlias) ? $modelAlias : $modelClass ?>
+
 {
     /**
      * @inheritdoc

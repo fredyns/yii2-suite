@@ -42,9 +42,9 @@ use cornernote\returnurl\ReturnUrl;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- <?php if ($generator->searchModelClass !== ''): ?>
+<?php if ($generator->searchModelClass !== ''): ?>
  * @var <?= ltrim($generator->searchModelClass, '\\') ?> $searchModel
- <?php endif; ?>
+<?php endif; ?>
  */
 
 $this->title = Yii::t(<?= "'{$generator->modelMessageCategory}', '{$modelName}'" ?>);
@@ -147,7 +147,9 @@ echo "\n    ?>\n";
                     if (++$count < $generator->gridMaxColumns) {
                         echo "                " . str_replace("\n", "\n                ", $format) . ",\n";
                     } else {
-                        echo "                /*\n" . str_replace("\n", "\n                ", $format) . ",*/\n";
+                        echo "                /*/\n                " 
+                            .trim(str_replace("\n", "\n                ", $format)) 
+                            .",\n                //*/\n";
                     }
                 }
 
@@ -162,7 +164,7 @@ echo "\n    ?>\n";
             'filterRowOptions' => ['class' => 'kartik-sheet-style'],
             'pjax' => FALSE, // pjax is set to always true for this demo
             'toolbar' => [
-                '{export}',
+                $actionControl->button('create').' {export}',
             ],
             'export' => [
                 'icon' => 'export',

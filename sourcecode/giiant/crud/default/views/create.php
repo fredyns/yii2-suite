@@ -22,9 +22,9 @@ use yii\helpers\Url;
 use cornernote\returnurl\ReturnUrl;
 
 /**
-* @var yii\web\View $this
-* @var <?= ltrim($generator->modelClass, '\\') ?> $model
-*/
+ * @var yii\web\View $this
+ * @var <?= ltrim($generator->modelClass, '\\') ?> $model
+ */
 
 $this->title = $actionControl->breadcrumbLabel('create');
 $this->params['breadcrumbs'][] = $actionControl->breadcrumbItem('index');
@@ -35,15 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1>
         <?= "<?= Yii::t('{$generator->modelMessageCategory}', '{$modelName}') ?>\n" ?>
         <small>
-            <?php $label = StringHelper::basename($generator->modelClass); ?>
-            <?= '<?= $model->'.$generator->getModelNameAttribute($generator->modelClass)." ?>\n" ?>
+            new
         </small>
     </h1>
 
     <div class="clearfix crud-navigation">
         <div class="pull-left">
-            <?= "<?php\n" ?>
-            Html::a(<?= $generator->generateString('Cancel') ?>, ReturnUrl::getUrl(Url::previous()), ['class' => 'btn btn-default']); ?>
+            <?= "<?= " ?>Html::a(<?= $generator->generateString('Cancel') ?>, ReturnUrl::getUrl(Url::previous()), ['class' => 'btn btn-default']); ?>
         </div>
     </div>
 

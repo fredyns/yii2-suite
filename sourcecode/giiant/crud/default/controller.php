@@ -44,7 +44,6 @@ use yii\web\HttpException;
 use yii\helpers\Url;
 use dmstr\bootstrap\Tabs;
 use cornernote\returnurl\ReturnUrl;
-
 <?php
 echo "use ".ltrim($generator->modelClass, '\\').";\n";
 
@@ -54,13 +53,13 @@ if ($searchModelClass !== ''){
     echo ";\n";
 }
 
-echo "use ".$formPath.";";
-echo "use ".$actioncontrolPath.";";
+echo "use ".$formPath.";\n";
+echo "use ".$actioncontrolPath.";\n";
+echo "\n";
 ?>
-
 /**
-* <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
-*/
+ * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
+ */
 class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->baseControllerClass)."\n" ?>
 {
 
