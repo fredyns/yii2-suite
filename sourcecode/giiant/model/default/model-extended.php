@@ -36,9 +36,12 @@ use <?= $generator->ns ?>\base\<?= $className ?> as Base<?= $className ?>;
 class <?= $className ?> extends Base<?= $className . "\n" ?>
 {
 
-use <?= implode(', ', $modelTrait) ?>;
+    use <?= implode(', ', $modelTrait) ?>;
 
-public function behaviors()
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
     {
         return ArrayHelper::merge(
             parent::behaviors(),
@@ -48,6 +51,9 @@ public function behaviors()
         );
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return ArrayHelper::merge(
