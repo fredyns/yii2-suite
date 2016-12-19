@@ -122,7 +122,7 @@ class <?= $className ?>ActControl extends \fredyns\suite\libraries\ActionControl
         );
     }
 
-    <?php if ($tableSchema->getColumn('deleted_at') !== null): ?>
+<?php if ($tableSchema->getColumn('deleted_at') !== null): ?>
     /**
      * check permission to access Deleted page
      *
@@ -132,7 +132,7 @@ class <?= $className ?>ActControl extends \fredyns\suite\libraries\ActionControl
     {
         return true;
     }
-    <?php endif; ?>
+<?php endif; ?>
 
     ################################ sample : additional action ################################ 
 
