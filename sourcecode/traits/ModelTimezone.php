@@ -4,6 +4,7 @@ namespace fredyns\suite\traits;
 
 use DateTime;
 use DateTimeZone;
+use Yii;
 
 /**
  * additional function for model with timezone field
@@ -24,7 +25,11 @@ trait ModelTimezone
      */
     public function getDateTimeZone()
     {
-        return new DateTimeZone($this->timezone);
+        try {
+            return new DateTimeZone($this->timezone);
+        } catch (\Exception $ex) {
+            return new DateTimeZone(Yii::$app->timeZone);
+        }
     }
 
     /**
