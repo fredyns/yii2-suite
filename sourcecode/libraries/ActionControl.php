@@ -79,8 +79,7 @@ class ActionControl extends \yii\base\Object
     {
         $msg = ArrayHelper::getValue($this->errors, $name, []);
 
-        if ($msg && $asString)
-        {
+        if ($msg && $asString) {
             return implode("<br/>\n", $msg);
         }
 
@@ -108,8 +107,7 @@ class ActionControl extends \yii\base\Object
      */
     public function check($action, $params = [])
     {
-        if ($this->allow($action, $params) == FALSE)
-        {
+        if ($this->allow($action, $params) == FALSE) {
             $message = $this->getError($action, TRUE);
 
             throw new ForbiddenHttpException($message);
@@ -143,16 +141,12 @@ class ActionControl extends \yii\base\Object
      */
     public function allow($action, $params = [])
     {
-        if (array_key_exists($action, $this->allowed) == FALSE)
-        {
+        if (array_key_exists($action, $this->allowed) == FALSE) {
             $function = 'getAllow'.ucfirst($action);
 
-            if (method_exists($this, $function))
-            {
+            if (method_exists($this, $function)) {
                 $this->allowed[$action] = call_user_func_array([$this, $function], [$params]);
-            }
-            else
-            {
+            } else {
                 $this->addError($action, "Action '{$action}' Not Allowed.");
                 $this->allowed[$action] = FALSE;
             }
@@ -206,16 +200,14 @@ class ActionControl extends \yii\base\Object
     public function getAllowView($params = [])
     {
         // prerequisites
-        if (($this->model instanceof ActiveRecord) == FALSE)
-        {
+        if (($this->model instanceof ActiveRecord) == FALSE) {
             $this->addError('view', "Unknown Data.");
 
             return FALSE;
         }
 
         // blacklist
-        if ($this->model->isNewRecord)
-        {
+        if ($this->model->isNewRecord) {
             $this->addError('view', "Can't view unsaved Data.");
         }
 
@@ -231,16 +223,14 @@ class ActionControl extends \yii\base\Object
     public function getAllowUpdate($params = [])
     {
         // prerequisites
-        if (($this->model instanceof ActiveRecord) == FALSE)
-        {
+        if (($this->model instanceof ActiveRecord) == FALSE) {
             $this->addError('update', "Unknown Data.");
 
             return FALSE;
         }
 
         // blacklist
-        if ($this->model->isNewRecord)
-        {
+        if ($this->model->isNewRecord) {
             $this->addError('update', "Can't update unsaved Data.");
         }
 
@@ -256,23 +246,19 @@ class ActionControl extends \yii\base\Object
     public function getAllowDelete($params = [])
     {
         // prerequisites
-        if (($this->model instanceof ActiveRecord) == FALSE)
-        {
+        if (($this->model instanceof ActiveRecord) == FALSE) {
             $this->addError('delete', "Unknown Data.");
 
             return FALSE;
         }
 
         // blacklist
-        if ($this->model->isNewRecord)
-        {
+        if ($this->model->isNewRecord) {
             $this->addError('delete', "Can't delete unsaved Data.");
         }
 
-        if ($this->model->hasAttribute('recordStatus') && $this->model->hasAttribute('deleted_at'))
-        {
-            if ($this->model->getAttribute('recordStatus') == 'deleted')
-            {
+        if ($this->model->hasAttribute('recordStatus') && $this->model->hasAttribute('deleted_at')) {
+            if ($this->model->getAttribute('recordStatus') == 'deleted') {
                 $this->addError('delete', "Data already (soft) deleted.");
             }
         }
@@ -289,25 +275,20 @@ class ActionControl extends \yii\base\Object
     public function getAllowRestore($params = [])
     {
         // prerequisites
-        if (($this->model instanceof ActiveRecord) == FALSE)
-        {
+        if (($this->model instanceof ActiveRecord) == FALSE) {
             $this->addError('restore', "Unknown Data.");
 
             return FALSE;
         }
 
         // blacklist
-        if ($this->model->isNewRecord)
-        {
+        if ($this->model->isNewRecord) {
             $this->addError('restore', "Can't restore undeleted Data.");
         }
 
-        if ($this->model->hasAttribute('recordStatus') == FALSE OR $this->model->hasAttribute('deleted_at') == FALSE)
-        {
+        if ($this->model->hasAttribute('recordStatus') == FALSE OR $this->model->hasAttribute('deleted_at') == FALSE) {
             $this->addError('restore', "Data doesn't support soft-delete.");
-        }
-        elseif ($this->model->getAttribute('recordStatus') != 'deleted')
-        {
+        } elseif ($this->model->getAttribute('recordStatus') != 'deleted') {
             $this->addError('restore', "Data is not deleted.");
         }
 
@@ -335,8 +316,7 @@ class ActionControl extends \yii\base\Object
     {
         $controller = $this->controllerRoute();
 
-        if ($controller)
-        {
+        if ($controller) {
             $action = '/'.$controller.'/'.$action;
         }
 
@@ -350,8 +330,7 @@ class ActionControl extends \yii\base\Object
      */
     public function modelParam()
     {
-        if ($this->model instanceof ActiveRecord)
-        {
+        if ($this->model instanceof ActiveRecord) {
             return $this->model->getPrimaryKey(TRUE);
         }
 
@@ -368,12 +347,9 @@ class ActionControl extends \yii\base\Object
     {
         $function = 'getUrl'.ucfirst($name);
 
-        if (method_exists($this, $function))
-        {
+        if (method_exists($this, $function)) {
             return $this->$function();
-        }
-        else
-        {
+        } else {
             return [];
         }
     }
@@ -424,10 +400,9 @@ class ActionControl extends \yii\base\Object
      */
     public function getUrlView()
     {
-        if ($this->model instanceof ActiveRecord)
-        {
-            $param       = $this->modelParam();
-            $param[0]    = $this->actionRoute('view');
+        if ($this->model instanceof ActiveRecord) {
+            $param = $this->modelParam();
+            $param[0] = $this->actionRoute('view');
             $param['ru'] = ReturnUrl::getToken();
 
             return $param;
@@ -443,10 +418,9 @@ class ActionControl extends \yii\base\Object
      */
     public function getUrlUpdate()
     {
-        if ($this->model instanceof ActiveRecord)
-        {
-            $param       = $this->modelParam();
-            $param[0]    = $this->actionRoute('update');
+        if ($this->model instanceof ActiveRecord) {
+            $param = $this->modelParam();
+            $param[0] = $this->actionRoute('update');
             $param['ru'] = ReturnUrl::getToken();
 
             return $param;
@@ -462,10 +436,9 @@ class ActionControl extends \yii\base\Object
      */
     public function getUrlDelete()
     {
-        if ($this->model instanceof ActiveRecord)
-        {
-            $param       = $this->modelParam();
-            $param[0]    = $this->actionRoute('delete');
+        if ($this->model instanceof ActiveRecord) {
+            $param = $this->modelParam();
+            $param[0] = $this->actionRoute('delete');
             $param['ru'] = ReturnUrl::getToken();
 
             return $param;
@@ -481,10 +454,9 @@ class ActionControl extends \yii\base\Object
      */
     public function getUrlRestore()
     {
-        if ($this->model instanceof ActiveRecord)
-        {
-            $param       = $this->modelParam();
-            $param[0]    = $this->actionRoute('restore');
+        if ($this->model instanceof ActiveRecord) {
+            $param = $this->modelParam();
+            $param[0] = $this->actionRoute('restore');
             $param['ru'] = ReturnUrl::getToken();
 
             return $param;
@@ -500,10 +472,8 @@ class ActionControl extends \yii\base\Object
      */
     public function actionDefault()
     {
-        if ($this->model instanceof ActiveRecord)
-        {
-            if ($this->model->isNewRecord == FALSE)
-            {
+        if ($this->model instanceof ActiveRecord) {
+            if ($this->model->isNewRecord == FALSE) {
                 return $this->actionPersistentModel();
             }
         }
@@ -539,94 +509,94 @@ class ActionControl extends \yii\base\Object
     public function actions()
     {
         return [
-            'index'   => [
-                'label'         => 'List',
-                'url'           => $this->urlIndex,
-                'icon'          => Icon::show('list'),
-                'linkOptions'   => [
-                    'title'      => 'click to open all active data',
+            'index' => [
+                'label' => 'List',
+                'url' => $this->urlIndex,
+                'icon' => Icon::show('list'),
+                'linkOptions' => [
+                    'title' => 'click to open all active data',
                     'aria-label' => 'Index',
-                    'data-pjax'  => '0',
+                    'data-pjax' => '0',
                 ],
                 'buttonOptions' => [
                     'class' => 'btn btn-default',
                 ],
             ],
             'deleted' => [
-                'label'         => 'Deleted',
-                'url'           => $this->urlDeleted,
-                'icon'          => Icon::show('trash'),
-                'linkOptions'   => [
-                    'title'      => 'click to open all deleted data',
+                'label' => 'Deleted',
+                'url' => $this->urlDeleted,
+                'icon' => Icon::show('trash'),
+                'linkOptions' => [
+                    'title' => 'click to open all deleted data',
                     'aria-label' => 'Deleted',
-                    'data-pjax'  => '0',
+                    'data-pjax' => '0',
                 ],
                 'buttonOptions' => [
                     'class' => 'btn btn-info',
                 ],
             ],
-            'create'  => [
-                'label'         => 'Create',
-                'url'           => $this->urlCreate,
-                'icon'          => Icon::show('plus'),
-                'linkOptions'   => [
-                    'title'      => 'click to create new record',
+            'create' => [
+                'label' => 'Create',
+                'url' => $this->urlCreate,
+                'icon' => Icon::show('plus'),
+                'linkOptions' => [
+                    'title' => 'click to create new record',
                     'aria-label' => 'Create',
-                    'data-pjax'  => '0',
+                    'data-pjax' => '0',
                 ],
                 'buttonOptions' => [
                     'class' => 'btn btn-info',
                 ],
             ],
-            'view'    => [
-                'label'         => 'View',
-                'url'           => $this->urlView,
-                'icon'          => Icon::show('zoom-in'),
-                'linkOptions'   => [
-                    'title'      => 'click to view this data',
+            'view' => [
+                'label' => 'View',
+                'url' => $this->urlView,
+                'icon' => Icon::show('zoom-in'),
+                'linkOptions' => [
+                    'title' => 'click to view this data',
                     'aria-label' => 'View',
-                    'data-pjax'  => '0',
+                    'data-pjax' => '0',
                 ],
                 'buttonOptions' => [
                     'class' => 'btn btn-primary',
                 ],
             ],
-            'update'  => [
-                'label'         => 'Update',
-                'url'           => $this->urlUpdate,
-                'icon'          => Icon::show('pencil'),
-                'linkOptions'   => [
-                    'title'      => 'click to edit this data',
+            'update' => [
+                'label' => 'Update',
+                'url' => $this->urlUpdate,
+                'icon' => Icon::show('pencil'),
+                'linkOptions' => [
+                    'title' => 'click to edit this data',
                     'aria-label' => 'Update',
-                    'data-pjax'  => '0',
+                    'data-pjax' => '0',
                 ],
                 'buttonOptions' => [
                     'class' => 'btn btn-success',
                 ],
             ],
-            'delete'  => [
-                'label'         => 'Delete',
-                'url'           => $this->urlDelete,
-                'icon'          => Icon::show('trash'),
-                'linkOptions'   => [
-                    'title'        => 'click to delete this data',
-                    'aria-label'   => 'Delete',
-                    'data-pjax'    => '0',
+            'delete' => [
+                'label' => 'Delete',
+                'url' => $this->urlDelete,
+                'icon' => Icon::show('trash'),
+                'linkOptions' => [
+                    'title' => 'click to delete this data',
+                    'aria-label' => 'Delete',
+                    'data-pjax' => '0',
                     'data-confirm' => 'Are you sure to delete this item?',
-                    'data-method'  => 'post',
+                    'data-method' => 'post',
                 ],
                 'buttonOptions' => [
                     'class' => 'btn btn-danger',
                 ],
             ],
             'restore' => [
-                'label'         => 'Restore',
-                'url'           => $this->urlRestore,
-                'icon'          => Icon::show('retweet'),
-                'linkOptions'   => [
-                    'title'        => 'click to restore this data',
-                    'aria-label'   => 'Restore',
-                    'data-pjax'    => '0',
+                'label' => 'Restore',
+                'url' => $this->urlRestore,
+                'icon' => Icon::show('retweet'),
+                'linkOptions' => [
+                    'title' => 'click to restore this data',
+                    'aria-label' => 'Restore',
+                    'data-pjax' => '0',
                     'data-confirm' => 'Are you sure to restore this item?',
                 ],
                 'buttonOptions' => [
@@ -647,8 +617,7 @@ class ActionControl extends \yii\base\Object
     {
         $param = ArrayHelper::getValue($this->actions(), $key);
 
-        if ($param && is_array($param) && $options && is_array($options))
-        {
+        if ($param && is_array($param) && $options && is_array($options)) {
             $param = ArrayHelper::merge($param, $options);
         }
 
@@ -664,25 +633,21 @@ class ActionControl extends \yii\base\Object
      */
     public function a($name, $options = [])
     {
-        if (is_string($options))
-        {
+        if (is_string($options)) {
             $options = ['label' => $options];
         }
 
-        $allow  = $this->allow($name);
+        $allow = $this->allow($name);
         $params = $this->param($name, $options);
 
-        $label       = ArrayHelper::getValue($params, 'label');
+        $label = ArrayHelper::getValue($params, 'label');
         $linkOptions = ArrayHelper::getValue($params, 'linkOptions', []);
-        $urlOptions  = ArrayHelper::getValue($params, 'urlOptions', []);
+        $urlOptions = ArrayHelper::getValue($params, 'urlOptions', []);
 
-        if ($allow)
-        {
+        if ($allow) {
             $url = ArrayHelper::merge($params['url'], $urlOptions);
-        }
-        else
-        {
-            $url                  = '#';
+        } else {
+            $url = '#';
             $linkOptions['title'] = $this->getError($name, TRUE);
         }
 
@@ -700,8 +665,7 @@ class ActionControl extends \yii\base\Object
     {
         $allow = $this->allow($name);
 
-        if ($allow)
-        {
+        if ($allow) {
             return $this->a($name, $options);
         }
 
@@ -717,30 +681,26 @@ class ActionControl extends \yii\base\Object
      */
     public function btn($name, $options = [])
     {
-        if (is_string($options))
-        {
+        if (is_string($options)) {
             $options = ['label' => $options];
         }
 
-        $allow  = $this->allow($name);
+        $allow = $this->allow($name);
         $params = $this->param($name, $options);
 
-        $icon          = ArrayHelper::getValue($params, 'icon');
-        $text          = ArrayHelper::getValue($params, 'label');
-        $urlOptions    = ArrayHelper::getValue($params, 'urlOptions', []);
-        $linkOptions   = ArrayHelper::getValue($params, 'linkOptions', []);
+        $icon = ArrayHelper::getValue($params, 'icon');
+        $text = ArrayHelper::getValue($params, 'label');
+        $urlOptions = ArrayHelper::getValue($params, 'urlOptions', []);
+        $linkOptions = ArrayHelper::getValue($params, 'linkOptions', []);
         $buttonOptions = ArrayHelper::getValue($params, 'buttonOptions', []);
 
-        $label       = trim($icon.' '.$text);
+        $label = trim($icon.' '.$text);
         $linkOptions = ArrayHelper::merge($linkOptions, $buttonOptions);
 
-        if ($allow)
-        {
+        if ($allow) {
             $url = ArrayHelper::merge($params['url'], $urlOptions);
-        }
-        else
-        {
-            $url                  = '#';
+        } else {
+            $url = '#';
             $linkOptions['title'] = $this->getError($name, TRUE);
         }
 
@@ -758,8 +718,7 @@ class ActionControl extends \yii\base\Object
     {
         $allow = $this->allow($name);
 
-        if ($allow)
-        {
+        if ($allow) {
             return $this->btn($name, $options);
         }
 
@@ -774,29 +733,24 @@ class ActionControl extends \yii\base\Object
      */
     public function buttons($items = [])
     {
-        if (empty($items))
-        {
+        if (empty($items)) {
             $items = $this->actionDefault();
         }
 
         $buttons = [];
 
-        foreach ($items as $item => $options)
-        {
-            if (is_int($item))
-            {
-                $item    = $options;
+        foreach ($items as $item => $options) {
+            if (is_int($item)) {
+                $item = $options;
                 $options = [];
             }
 
-            if ($this->allow($item))
-            {
+            if ($this->allow($item)) {
                 $buttons[] = $this->btn($item, $options);
             }
         }
 
-        if ($buttons)
-        {
+        if ($buttons) {
             return implode("\n", $buttons);
         }
 
@@ -811,34 +765,28 @@ class ActionControl extends \yii\base\Object
      */
     public function dropdownItems($items = [])
     {
-        if (empty($items))
-        {
+        if (empty($items)) {
             $items = $this->actionDefault();
         }
 
-        $params    = [];
-        $count     = 0;
+        $params = [];
+        $count = 0;
         $lastParam = NULL;
 
-        foreach ($items as $item)
-        {
-            if (is_string($item) && $item !== static::MENU_DIVIDER)
-            {
+        foreach ($items as $item) {
+            if (is_string($item) && $item !== static::MENU_DIVIDER) {
                 $allow = $this->allow($item);
                 $param = $this->param($item);
 
-                if ($param && $allow)
-                {
-                    $icon           = ArrayHelper::remove($param, 'icon');
+                if ($param && $allow) {
+                    $icon = ArrayHelper::remove($param, 'icon');
                     $param['label'] = $icon.'&nbsp; '.$param['label'];
-                    $params[]       = $param;
-                    $lastParam      = $param;
+                    $params[] = $param;
+                    $lastParam = $param;
                     $count++;
                 }
-            }
-            else if (is_array($item) OR ( $count > 0 && $item !== $lastParam ))
-            {
-                $params[]  = $param;
+            } else if (is_array($item) OR ( $count > 0 && $item !== $lastParam )) {
+                $params[] = $param;
                 $lastParam = $param;
                 $count++;
             }
@@ -856,38 +804,34 @@ class ActionControl extends \yii\base\Object
      */
     public function dropdown($config = [])
     {
-        if ($this->model instanceof ActiveRecord)
-        {
+        if ($this->model instanceof ActiveRecord) {
             $elementId = Inflector::camel2id($this->model->tableName());
             $elementId .= '_'.implode('_', $this->modelParam());
-        }
-        else
-        {
+        } else {
             $elementId = get_called_class().'_'.$this->id;
         }
 
-        $items        = ArrayHelper::getValue($config, 'items', $this->actionDefault());
+        $items = ArrayHelper::getValue($config, 'items', $this->actionDefault());
         $buttonConfig = [
-            'id'          => $elementId,
+            'id' => $elementId,
             'encodeLabel' => false,
-            'label'       => 'Action',
-            'dropdown'    => [
-                'options'      => [
+            'label' => 'Action',
+            'dropdown' => [
+                'options' => [
                     'class' => 'dropdown-menu-'.ArrayHelper::getValue($config, 'align', 'right'),
                 ],
                 'encodeLabels' => false,
-                'items'        => $this->dropdownItems($items),
+                'items' => $this->dropdownItems($items),
             ],
-            'options'     => [
+            'options' => [
                 'data-pjax' => '0',
-                'class'     => 'btn btn-primary',
+                'class' => 'btn btn-primary',
             ],
         ];
 
         $options = ArrayHelper::getValue($config, 'options');
 
-        if ($options)
-        {
+        if ($options) {
             $buttonConfig = ArrayHelper::merge($buttonConfig, $options);
         }
 
@@ -904,14 +848,11 @@ class ActionControl extends \yii\base\Object
     {
         $alternatives = ['label', 'name', 'title', 'number', 'id'];
 
-        foreach ($alternatives as $attribute)
-        {
-            if ($this->model->hasAttribute($attribute))
-            {
+        foreach ($alternatives as $attribute) {
+            if ($this->model->hasAttribute($attribute)) {
                 $label = $this->model->getAttribute($attribute);
 
-                if ($label)
-                {
+                if ($label) {
                     return $label;
                 }
             }
@@ -928,19 +869,15 @@ class ActionControl extends \yii\base\Object
      */
     public function getLinkTo($options = [])
     {
-        if (is_scalar($options))
-        {
+        if (is_scalar($options)) {
             $options = ['label' => $options];
-        }
-        elseif (is_array($options) == FALSE)
-        {
-            throw new InvalidConfigException("Invalid getLinkTo() parameter.");
+        } elseif (is_array($options) == FALSE) {
+            $options = [];
         }
 
         $options = ArrayHelper::merge(['label' => $this->modelLabel()], $options);
 
-        if ($this->allow('view'))
-        {
+        if ($this->allow('view')) {
             return $this->a('view', $options);
         }
 
@@ -955,11 +892,11 @@ class ActionControl extends \yii\base\Object
     public function breadcrumbLabels()
     {
         return [
-            'index'   => 'List',
-            'create'  => 'Create',
-            'view'    => '#'.implode('-', $this->modelParam()),
-            'update'  => 'Edit',
-            'delete'  => 'Delete',
+            'index' => 'List',
+            'create' => 'Create',
+            'view' => '#'.implode('-', $this->modelParam()),
+            'update' => 'Edit',
+            'delete' => 'Delete',
             'restore' => 'Restore',
         ];
     }
@@ -984,17 +921,13 @@ class ActionControl extends \yii\base\Object
      */
     public function breadcrumbItem($name, $options = [])
     {
-        if ($this->allow($name))
-        {
+        if ($this->allow($name)) {
             return ArrayHelper::merge([
                     'label' => $this->breadcrumbLabel($name),
-                    'url'   => $this->url($name),
+                    'url' => $this->url($name),
                     ], $options);
-        }
-        else
-        {
+        } else {
             return $this->breadcrumbLabel($name);
         }
     }
-
 }
