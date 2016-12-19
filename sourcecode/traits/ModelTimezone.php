@@ -19,7 +19,7 @@ use DateTimeZone;
  * @property DateTimeZone $dateTimeZone model timezone object
  * @property DateTime $dateTime current datetime as object
  */
-class ModelTimezone
+trait ModelTimezone
 {
 
     /**
