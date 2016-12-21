@@ -125,7 +125,7 @@ EOS;
 
         <?= '<?php ' ?>echo $form->errorSummary($model); ?>
 
-        <?= "<?php\n" ?>
+        <?= "<?=\n" ?>
         Html::submitButton(
             '<span class="glyphicon glyphicon-check"></span> ' .
             ($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Save') ?>),
