@@ -8,12 +8,12 @@ use fredyns\suite\models\Profile;
 /**
  * Add blaming for model
  *
- * @property fredyns\suite\models\User $createdByUser
- * @property fredyns\suite\models\User $updatedByUser
- * @property fredyns\suite\models\User $deletedByUser
- * @property fredyns\suite\models\Profile $createdByProfile
- * @property fredyns\suite\models\Profile $updatedByProfile
- * @property fredyns\suite\models\Profile $deletedByProfile
+ * @property User $createdByUser
+ * @property User $updatedByUser
+ * @property User $deletedByUser
+ * @property Profile $createdByProfile
+ * @property Profile $updatedByProfile
+ * @property Profile $deletedByProfile
  *
  * @author fredy
  */
@@ -28,16 +28,14 @@ trait ModelBlame
     public function yiiModelUser()
     {
         $alternatives = [
-            'app'      => 'app\models\User',
+            'app' => 'app\models\User',
             'frontend' => 'frontend\models\User',
-            'backend'  => 'backend\models\User',
-            'common'   => 'common\models\User',
+            'backend' => 'backend\models\User',
+            'common' => 'common\models\User',
         ];
 
-        foreach ($alternatives as $value)
-        {
-            if (class_exists($value))
-            {
+        foreach ($alternatives as $value) {
+            if (class_exists($value)) {
                 return $value;
             }
         }
@@ -53,12 +51,10 @@ trait ModelBlame
     public function modelUser()
     {
         $dektriumUserClass = 'dektrium\user\models\User';
-        $yiiUserClass      = $this->yiiModelUser();
+        $yiiUserClass = $this->yiiModelUser();
 
-        if (class_exists($dektriumUserClass))
-        {
-            if ($yiiUserClass && is_subclass_of($yiiUserClass, $dektriumUserClass))
-            {
+        if (class_exists($dektriumUserClass)) {
+            if ($yiiUserClass && is_subclass_of($yiiUserClass, $dektriumUserClass)) {
                 return $yiiUserClass;
             }
         }
@@ -74,16 +70,14 @@ trait ModelBlame
     public function yiiModelProfile()
     {
         $alternatives = [
-            'app'      => 'app\models\Profile',
+            'app' => 'app\models\Profile',
             'frontend' => 'frontend\models\Profile',
-            'backend'  => 'backend\models\Profile',
-            'common'   => 'common\models\Profile',
+            'backend' => 'backend\models\Profile',
+            'common' => 'common\models\Profile',
         ];
 
-        foreach ($alternatives as $value)
-        {
-            if (class_exists($value))
-            {
+        foreach ($alternatives as $value) {
+            if (class_exists($value)) {
                 return $value;
             }
         }
@@ -99,12 +93,10 @@ trait ModelBlame
     public function modelProfile()
     {
         $dektriumProfileClass = 'dektrium\user\models\Profile';
-        $yiiProfileClass      = $this->yiiModelProfile();
+        $yiiProfileClass = $this->yiiModelProfile();
 
-        if (class_exists($dektriumProfileClass))
-        {
-            if ($yiiProfileClass && is_subclass_of($yiiProfileClass, $dektriumProfileClass))
-            {
+        if (class_exists($dektriumProfileClass)) {
+            if ($yiiProfileClass && is_subclass_of($yiiProfileClass, $dektriumProfileClass)) {
                 return $yiiProfileClass;
             }
         }
@@ -122,8 +114,7 @@ trait ModelBlame
     {
         $modelName = $this->modelUser();
 
-        if ($this->hasAttribute($attribute) && $modelName)
-        {
+        if ($this->hasAttribute($attribute) && $modelName) {
             return $this->hasOne($modelName, ['id' => $attribute]);
         }
 
@@ -139,8 +130,7 @@ trait ModelBlame
     {
         $modelName = $this->modelProfile();
 
-        if ($this->hasAttribute($attribute) && $modelName)
-        {
+        if ($this->hasAttribute($attribute) && $modelName) {
             return $this->hasOne($modelName, ['user_id' => $attribute]);
         }
 
@@ -237,5 +227,4 @@ trait ModelBlame
     {
         return $this->getBlamedUser('deleted_by');
     }
-
 }
