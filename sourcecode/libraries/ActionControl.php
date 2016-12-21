@@ -37,6 +37,14 @@ use kartik\icons\Icon;
  */
 class ActionControl extends \yii\base\Object
 {
+    const ACTION_INDEX = 'index';
+    const ACTION_DELETED = 'deleted';
+    const ACTION_CREATE = 'create';
+    const ACTION_VIEW = 'view';
+    const ACTION_UPDATE = 'update';
+    const ACTION_DELETE = 'delete';
+    const ACTION_RESTORE = 'restore';
+
     /**
      * menu divider in dropdown menu
      */
@@ -172,7 +180,7 @@ class ActionControl extends \yii\base\Object
      */
     public function getAllowDeleted($params = [])
     {
-        $this->addError('deleted', "Deleted model page is not configured properly.");
+        $this->addError(static::ACTION_DELETED, "Deleted model page is not configured properly.");
 
         /**
          * default to be false.
@@ -201,18 +209,18 @@ class ActionControl extends \yii\base\Object
     {
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE) {
-            $this->addError('view', "Unknown Data.");
+            $this->addError(static::ACTION_VIEW, "Unknown Data.");
 
             return FALSE;
         }
 
         // blacklist
         if ($this->model->isNewRecord) {
-            $this->addError('view', "Can't view unsaved Data.");
+            $this->addError(static::ACTION_VIEW, "Can't view unsaved Data.");
         }
 
         // conclusion
-        return ($this->isError('view') == FALSE);
+        return ($this->isError(static::ACTION_VIEW) == FALSE);
     }
 
     /**
@@ -224,18 +232,18 @@ class ActionControl extends \yii\base\Object
     {
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE) {
-            $this->addError('update', "Unknown Data.");
+            $this->addError(static::ACTION_UPDATE, "Unknown Data.");
 
             return FALSE;
         }
 
         // blacklist
         if ($this->model->isNewRecord) {
-            $this->addError('update', "Can't update unsaved Data.");
+            $this->addError(static::ACTION_UPDATE, "Can't update unsaved Data.");
         }
 
         // conclusion
-        return ($this->isError('update') == FALSE);
+        return ($this->isError(static::ACTION_UPDATE) == FALSE);
     }
 
     /**
@@ -247,24 +255,24 @@ class ActionControl extends \yii\base\Object
     {
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE) {
-            $this->addError('delete', "Unknown Data.");
+            $this->addError(static::ACTION_DELETE, "Unknown Data.");
 
             return FALSE;
         }
 
         // blacklist
         if ($this->model->isNewRecord) {
-            $this->addError('delete', "Can't delete unsaved Data.");
+            $this->addError(static::ACTION_DELETE, "Can't delete unsaved Data.");
         }
 
         if ($this->model->hasAttribute('recordStatus') && $this->model->hasAttribute('deleted_at')) {
             if ($this->model->getAttribute('recordStatus') == 'deleted') {
-                $this->addError('delete', "Data already (soft) deleted.");
+                $this->addError(static::ACTION_DELETE, "Data already (soft) deleted.");
             }
         }
 
         // conclusion
-        return ($this->isError('delete') == FALSE);
+        return ($this->isError(static::ACTION_DELETE) == FALSE);
     }
 
     /**
@@ -276,24 +284,24 @@ class ActionControl extends \yii\base\Object
     {
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE) {
-            $this->addError('restore', "Unknown Data.");
+            $this->addError(static::ACTION_RESTORE, "Unknown Data.");
 
             return FALSE;
         }
 
         // blacklist
         if ($this->model->isNewRecord) {
-            $this->addError('restore', "Can't restore undeleted Data.");
+            $this->addError(static::ACTION_RESTORE, "Can't restore undeleted Data.");
         }
 
         if ($this->model->hasAttribute('recordStatus') == FALSE OR $this->model->hasAttribute('deleted_at') == FALSE) {
-            $this->addError('restore', "Data doesn't support soft-delete.");
+            $this->addError(static::ACTION_RESTORE, "Data doesn't support soft-delete.");
         } elseif ($this->model->getAttribute('recordStatus') != 'deleted') {
-            $this->addError('restore', "Data is not deleted.");
+            $this->addError(static::ACTION_RESTORE, "Data is not deleted.");
         }
 
         // conclusion
-        return ($this->isError('restore') == FALSE);
+        return ($this->isError(static::ACTION_RESTORE) == FALSE);
     }
 
     /**
@@ -362,7 +370,7 @@ class ActionControl extends \yii\base\Object
     public function getUrlIndex()
     {
         return [
-            $this->actionRoute('index'),
+            $this->actionRoute(static::ACTION_INDEX),
             'ru' => ReturnUrl::getToken(),
         ];
     }
@@ -375,7 +383,7 @@ class ActionControl extends \yii\base\Object
     public function getUrlDeleted()
     {
         return [
-            $this->actionRoute('deleted'),
+            $this->actionRoute(static::ACTION_DELETED),
             'ru' => ReturnUrl::getToken(),
         ];
     }
@@ -388,7 +396,7 @@ class ActionControl extends \yii\base\Object
     public function getUrlCreate()
     {
         return [
-            $this->actionRoute('create'),
+            $this->actionRoute(static::ACTION_CREATE),
             'ru' => ReturnUrl::getToken(),
         ];
     }
@@ -402,7 +410,7 @@ class ActionControl extends \yii\base\Object
     {
         if ($this->model instanceof ActiveRecord) {
             $param = $this->modelParam();
-            $param[0] = $this->actionRoute('view');
+            $param[0] = $this->actionRoute(static::ACTION_VIEW);
             $param['ru'] = ReturnUrl::getToken();
 
             return $param;
@@ -420,7 +428,7 @@ class ActionControl extends \yii\base\Object
     {
         if ($this->model instanceof ActiveRecord) {
             $param = $this->modelParam();
-            $param[0] = $this->actionRoute('update');
+            $param[0] = $this->actionRoute(static::ACTION_UPDATE);
             $param['ru'] = ReturnUrl::getToken();
 
             return $param;
@@ -438,7 +446,7 @@ class ActionControl extends \yii\base\Object
     {
         if ($this->model instanceof ActiveRecord) {
             $param = $this->modelParam();
-            $param[0] = $this->actionRoute('delete');
+            $param[0] = $this->actionRoute(static::ACTION_DELETE);
             $param['ru'] = ReturnUrl::getToken();
 
             return $param;
@@ -456,7 +464,7 @@ class ActionControl extends \yii\base\Object
     {
         if ($this->model instanceof ActiveRecord) {
             $param = $this->modelParam();
-            $param[0] = $this->actionRoute('restore');
+            $param[0] = $this->actionRoute(static::ACTION_RESTORE);
             $param['ru'] = ReturnUrl::getToken();
 
             return $param;
@@ -488,7 +496,7 @@ class ActionControl extends \yii\base\Object
      */
     public function actionPersistentModel()
     {
-        return ['view', 'update', 'delete', 'restore'];
+        return [static::ACTION_VIEW, static::ACTION_UPDATE, static::ACTION_DELETE, static::ACTION_RESTORE];
     }
 
     /**
@@ -498,7 +506,7 @@ class ActionControl extends \yii\base\Object
      */
     public function actionUnspecifiedModel()
     {
-        return ['index', 'create', 'deleted'];
+        return [static::ACTION_INDEX, static::ACTION_CREATE, static::ACTION_DELETED];
     }
 
     /**
@@ -509,7 +517,7 @@ class ActionControl extends \yii\base\Object
     public function actions()
     {
         return [
-            'index' => [
+            static::ACTION_INDEX => [
                 'label' => 'List',
                 'url' => $this->urlIndex,
                 'icon' => Icon::show('list'),
@@ -522,7 +530,7 @@ class ActionControl extends \yii\base\Object
                     'class' => 'btn btn-default',
                 ],
             ],
-            'deleted' => [
+            static::ACTION_DELETED => [
                 'label' => 'Deleted',
                 'url' => $this->urlDeleted,
                 'icon' => Icon::show('trash'),
@@ -535,7 +543,7 @@ class ActionControl extends \yii\base\Object
                     'class' => 'btn btn-info',
                 ],
             ],
-            'create' => [
+            static::ACTION_CREATE => [
                 'label' => 'Create',
                 'url' => $this->urlCreate,
                 'icon' => Icon::show('plus'),
@@ -548,7 +556,7 @@ class ActionControl extends \yii\base\Object
                     'class' => 'btn btn-info',
                 ],
             ],
-            'view' => [
+            static::ACTION_VIEW => [
                 'label' => 'View',
                 'url' => $this->urlView,
                 'icon' => Icon::show('zoom-in'),
@@ -561,7 +569,7 @@ class ActionControl extends \yii\base\Object
                     'class' => 'btn btn-primary',
                 ],
             ],
-            'update' => [
+            static::ACTION_UPDATE => [
                 'label' => 'Update',
                 'url' => $this->urlUpdate,
                 'icon' => Icon::show('pencil'),
@@ -574,7 +582,7 @@ class ActionControl extends \yii\base\Object
                     'class' => 'btn btn-success',
                 ],
             ],
-            'delete' => [
+            static::ACTION_DELETE => [
                 'label' => 'Delete',
                 'url' => $this->urlDelete,
                 'icon' => Icon::show('trash'),
@@ -589,7 +597,7 @@ class ActionControl extends \yii\base\Object
                     'class' => 'btn btn-danger',
                 ],
             ],
-            'restore' => [
+            static::ACTION_RESTORE => [
                 'label' => 'Restore',
                 'url' => $this->urlRestore,
                 'icon' => Icon::show('retweet'),
@@ -877,8 +885,8 @@ class ActionControl extends \yii\base\Object
 
         $options = ArrayHelper::merge(['label' => $this->modelLabel()], $options);
 
-        if ($this->allow('view')) {
-            return $this->a('view', $options);
+        if ($this->allow(static::ACTION_VIEW)) {
+            return $this->a(static::ACTION_VIEW, $options);
         }
 
         return $options['label'];
@@ -892,12 +900,12 @@ class ActionControl extends \yii\base\Object
     public function breadcrumbLabels()
     {
         return [
-            'index' => 'List',
-            'create' => 'Create',
-            'view' => '#'.implode('-', $this->modelParam()),
-            'update' => 'Edit',
-            'delete' => 'Delete',
-            'restore' => 'Restore',
+            static::ACTION_INDEX => 'List',
+            static::ACTION_CREATE => 'Create',
+            static::ACTION_VIEW => '#'.implode('-', $this->modelParam()),
+            static::ACTION_UPDATE => 'Edit',
+            static::ACTION_DELETE => 'Delete',
+            static::ACTION_RESTORE => 'Restore',
         ];
     }
 
