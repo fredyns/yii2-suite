@@ -27,25 +27,25 @@ AppAsset::register($this);
             <?php
             NavBar::begin([
                 'brandLabel' => Yii::$app->name,
-                'brandUrl'   => Yii::$app->homeUrl,
-                'options'    => [
+                'brandUrl' => Yii::$app->homeUrl,
+                'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
                 ],
             ]);
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
-                'items'   => [
+                'items' => [
                         ['label' => 'Home', 'url' => ['/site/index']],
                         ['label' => 'About', 'url' => ['/site/about']],
                         [
-                        'label'   => 'Login',
-                        'url'     => ['/user/security/login'],
+                        'label' => 'Login',
+                        'url' => ['/user/security/login'],
                         'visible' => Yii::$app->user->isGuest,
                     ],
                         [
-                        'label'       => 'Logout',
-                        'url'         => ['/user/security/logout'],
-                        'visible'     => !Yii::$app->user->isGuest,
+                        'label' => 'Logout',
+                        'url' => ['/user/security/logout'],
+                        'visible' => !Yii::$app->user->isGuest,
                         'linkOptions' => ['data-method' => 'post'],
                     ],
                 ],
@@ -59,6 +59,7 @@ AppAsset::register($this);
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ])
                 ?>
+                <?= Alert::widget() ?>
                 <?= $content ?>
             </div>
         </div>
