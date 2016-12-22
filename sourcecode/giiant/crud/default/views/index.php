@@ -16,8 +16,8 @@ $model = new $generator->modelClass();
 $model->setScenario('crud');
 
 $modelName = Inflector::camel2words(Inflector::pluralize(StringHelper::basename($model::className())));
-
 $safeAttributes = $model->safeAttributes();
+
 if (empty($safeAttributes)) {
     /** @var \yii\db\ActiveRecord $model */
     $model = new $generator->modelClass();
@@ -49,8 +49,8 @@ use cornernote\returnurl\ReturnUrl;
 
 $this->title = Yii::t(<?= "'{$generator->modelMessageCategory}', '{$modelName}'" ?>);
 $this->params['breadcrumbs'][] = $this->title;
-
 <?php if($generator->accessFilter): ?>
+
 /**
  * create action column template depending acces rights
  */
@@ -68,19 +68,18 @@ if (\Yii::$app->user->can('<?=$permisions['delete']['name']?>', ['route' => true
     $actionColumnTemplates[] = '{delete}';
 }
 <?php endif; ?>
-
 <?php echo '?>'; ?>
 
 <div class="giiant-crud <?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-index">
 
-<?php
-echo "    <?php\n    ";
-echo ($generator->indexWidgetType === 'grid') ? '// ' : ''; 
-echo "echo \$this->render('_search', ['model' =>\$searchModel]);";
-echo "\n    ?>\n";
-?>
+    <h1>
+        <?= "<?= Yii::t('{$generator->modelMessageCategory}', '{$modelName}') ?>\n" ?>
+        <small class="badge">
+            List
+        </small>
+    </h1>
 
-    <?php if ($generator->indexWidgetType === 'grid'): ?>
+<?php if ($generator->indexWidgetType === 'grid'): ?>
 
     <?= "<?php\n"; ?>
     \yii\widgets\Pjax::begin([
@@ -93,13 +92,13 @@ echo "\n    ?>\n";
     ]);
     ?>
 
-    <h1>
-        <?= "<?= Yii::t('{$generator->modelMessageCategory}', '{$modelName}') ?>\n" ?>
-        <small class="badge">
-            List
-        </small>
-    </h1>
-    
+<?php
+echo "    <?php\n    ";
+echo ($generator->indexWidgetType === 'grid') ? '// ' : ''; 
+echo "echo \$this->render('_search', ['model' =>\$searchModel]);";
+echo "\n    ?>";
+?>
+
     <div class="table-responsive">
         <?= "<?=\n" ?>
         GridView::widget([
@@ -213,10 +212,7 @@ echo "\n    ?>\n";
 
     </div>
 
-</div>
-
-<?= "<?php \yii\widgets\Pjax::end() ?>\n"; ?>
-
+    <?= "<?php "; ?>\yii\widgets\Pjax::end(); ?>
 <?php else: ?>
 
     <?= '<?= ' ?> 
@@ -228,6 +224,6 @@ echo "\n    ?>\n";
         },
     ]);
     ?>
-
 <?php endif; ?>
 
+</div>
