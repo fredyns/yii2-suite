@@ -150,7 +150,7 @@ class ActionControl extends \yii\base\Object
     public function allow($action, $params = [])
     {
         if (array_key_exists($action, $this->allowed) == FALSE) {
-            $function = 'getAllow'.ucfirst($action);
+            $function = 'getAllow'.Inflector::camelize($action);
 
             if (method_exists($this, $function)) {
                 $this->allowed[$action] = call_user_func_array([$this, $function], [$params]);
