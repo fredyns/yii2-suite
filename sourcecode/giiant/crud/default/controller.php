@@ -114,8 +114,6 @@ if ($traits) {
         Tabs::clearLocalStorage();
         Url::remember();
 
-        Yii::$app->session['__crudReturnUrl'] = null;
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'actionControl' => $actionControl,
@@ -138,8 +136,6 @@ if ($traits) {
         Tabs::clearLocalStorage();
         Url::remember();
 
-        Yii::$app->session['__crudReturnUrl'] = null;
-
         return $this->render('deleted', [
             'dataProvider' => $dataProvider,
             'actionControl' => $actionControl,
@@ -159,7 +155,6 @@ if ($traits) {
     {
         $model = $this->findModel(<?= $actionParams ?>);
         $actionControl = <?= $actioncontrolClass ?>::checkAccess('view', $model);
-        Yii::$app->session['__crudReturnUrl'] = ReturnUrl::getUrl(Url::previous());
 
         Url::remember();
         Tabs::rememberActiveState();
