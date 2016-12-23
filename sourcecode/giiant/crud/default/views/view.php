@@ -57,18 +57,13 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('view');
         <?= "<?= Yii::t('{$generator->modelMessageCategory}', '{$modelName}') ?>\n" ?>
         <small>
             <?= '<?= $model->'.$generator->getModelNameAttribute($generator->modelClass)." ?>\n" ?>
-
-            <?php if (in_array('fredyns\suite\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
-
+<?php if (in_array('fredyns\suite\traits\ModelSoftDelete', class_uses($generator->modelClass))): ?>
             <?= "<?php" ?> if ($model->recordStatus == 'deleted'): ?>
                 <span class="badge">deleted</span>
-            <?= "<?php" ?> endif; ?>
-            
-            <?php endif; ?>
-
+            <?= "<?php" ?> endif; ?>            
+<?php endif; ?>
         </small>
     </h1>
-
 
     <div class="clearfix crud-navigation">
 
@@ -85,10 +80,7 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('view');
 
     <hr />
 
-    <?php
-    echo "<?php \$this->beginBlock('{$generator->modelClass}'); ?>\n";
-    ?>
-
+    <?= "<?php "; ?>$this->beginBlock('{$generator->modelClass}'); ?>
     <?= $generator->partialView('detail_prepend', $model); ?>
 
     <?= "<?= \n" ?>
@@ -123,12 +115,10 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('view');
         ],
     ]);
     ?>
-
     <?= $generator->partialView('detail_append', $model); ?>
 
-    <?= "<?php \$this->endBlock(); ?>\n\n"; ?>
-
-    <?php
+    <?= "<?php \$this->endBlock(); ?>\n"; ?>
+<?php
 
     // get relation info $ prepare add button
     $model = new $generator->modelClass();
@@ -185,7 +175,7 @@ EOS;
 EOS;
         endif;
 
-        echo "    <?php \$this->endBlock() ?>\n\n";
+        echo "    <?php \$this->endBlock(); ?>\n";
 
         // build tab items
         $label = Inflector::camel2words($name);
@@ -202,7 +192,7 @@ EOS;
 
     if (empty($infoAttributes) == false)
     {
-        echo "    <?php \$this->beginBlock('info'); ?>\n";
+        echo "\n    <?php \$this->beginBlock('info'); ?>\n";
         echo <<<EOS
     <?=
     DetailView::widget([
@@ -260,7 +250,7 @@ EOS;
     ]);
     ?>\n
 EOS;
-        echo "    <?php \$this->endBlock(); ?>\n\n";
+        echo "    <?php \$this->endBlock(); ?>\n";
 
     $items .= <<<EOS
             [

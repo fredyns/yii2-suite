@@ -212,7 +212,7 @@ EOS;
 
         // add action column
 
-        $columns .= $actionColumn."\n";
+        $columns .= $actionColumn;
 
         $query = $showAllRecords ?
             "'query' => \\{$relation->modelClass}::find()" :

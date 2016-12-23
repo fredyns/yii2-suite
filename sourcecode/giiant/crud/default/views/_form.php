@@ -34,7 +34,6 @@ use dmstr\bootstrap\Tabs;
  * @var <?= ltrim($generator->modelClass, '\\') ?> $model
  * @var yii\widgets\ActiveForm $form
  */
-
 ?>
 
 <div class="<?= \yii\helpers\Inflector::camel2id(
@@ -57,8 +56,7 @@ use dmstr\bootstrap\Tabs;
     <div class="">
         <?php echo "<?php \$this->beginBlock('main'); ?>\n"; ?>
 
-        <p>
-            <?php
+        <p><?php
 
     $hidenAttributes = [
         'id',
