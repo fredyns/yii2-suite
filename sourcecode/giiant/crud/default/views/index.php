@@ -80,6 +80,10 @@ if (\Yii::$app->user->can('<?=$permisions['delete']['name']?>', ['route' => true
     </h1>
 
 <?php if ($generator->indexWidgetType === 'grid'): ?>
+    <?= "<?php " ?>//echo $this->render('_search', ['model' =>$searchModel]); ?>
+<?php else: ?>
+    <?= "<?= " ?>$this->render('_search', ['model' =>$searchModel]); ?>
+<?php endif; ?>
 
     <?= "<?php\n"; ?>
     \yii\widgets\Pjax::begin([
@@ -91,13 +95,7 @@ if (\Yii::$app->user->can('<?=$permisions['delete']['name']?>', ['route' => true
         ],
     ]);
     ?>
-
-<?php
-echo "    <?php\n    ";
-echo ($generator->indexWidgetType === 'grid') ? '// ' : ''; 
-echo "echo \$this->render('_search', ['model' =>\$searchModel]);";
-echo "\n    ?>";
-?>
+<?php if ($generator->indexWidgetType === 'grid'): ?>
 
     <div class="table-responsive">
         <?= "<?=\n" ?>
@@ -211,8 +209,6 @@ echo "\n    ?>";
         ?>
 
     </div>
-
-    <?= "<?php "; ?>\yii\widgets\Pjax::end(); ?>
 <?php else: ?>
 
     <?= '<?= ' ?> 
@@ -225,5 +221,7 @@ echo "\n    ?>";
     ]);
     ?>
 <?php endif; ?>
+
+    <?= "<?php "; ?>\yii\widgets\Pjax::end(); ?>
 
 </div>
