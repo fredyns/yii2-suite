@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $actionControl->breadcrumbLabel('view');
 
     <hr />
 
-    <?= "<?php "; ?>$this->beginBlock('{$generator->modelClass}'); ?>
+    <?= "<?php \$this->beginBlock('{$generator->modelClass}'); ?>"; ?>
     <?= $generator->partialView('detail_prepend', $model); ?>
 
     <?= "<?= \n" ?>
