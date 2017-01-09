@@ -66,6 +66,43 @@ class ActionControl extends \yii\base\Object
     public $errors = [];
 
     /**
+     * message storage
+     * 
+     * @return string[]
+     */
+    public function messages()
+    {
+        return [
+            'forbidden' => "%s is not allowed.",
+            'notconfigured' => "%s is not configured properly.",
+            'model-unknown' => "Unknown Data.",
+            'model-unsaved' => "Can't %s unsaved data.",
+            'model-deleted' => "Data already (soft) deleted.",
+            'model-active' => "Data is not deleted.",
+            'softdelete-unsupported' => "Data doesn't support soft-delete.",
+        ];
+    }
+
+    /**
+     * format message
+     * 
+     * @param string $name
+     * @param string[] $params
+     */
+    public function message($name, $params = [])
+    {
+        $messages = $this->messages();
+
+        if (array_key_exists($name, $messages) == false OR is_array($params) == false) {
+            throw new InvalidConfigException("message misconfigured.");
+        }
+
+        array_unshift($params, $messages[$name]);
+
+        return call_user_func_array('sprintf', $params);
+    }
+
+    /**
      * add new error message
      *
      * @param string $name
@@ -74,6 +111,20 @@ class ActionControl extends \yii\base\Object
     public function addError($name, $message)
     {
         $this->errors[$name][] = $message;
+    }
+
+    /**
+     * add formated error message
+     * 
+     * @param string $action
+     * @param string $msg
+     * @param string[] $params
+     */
+    public function addErrorMsg($action, $msg, $params = [])
+    {
+        $message = $this->message($msg, $params);
+
+        $this->addError($action, $message);
     }
 
     /**
@@ -155,7 +206,7 @@ class ActionControl extends \yii\base\Object
             if (method_exists($this, $function)) {
                 $this->allowed[$action] = call_user_func_array([$this, $function], [$params]);
             } else {
-                $this->addError($action, "Action '{$action}' Not Allowed.");
+                $this->addErrorMsg($action, 'notconfigured', [$action]);
                 $this->allowed[$action] = FALSE;
             }
         }
@@ -180,7 +231,9 @@ class ActionControl extends \yii\base\Object
      */
     public function getAllowDeleted($params = [])
     {
-        $this->addError(static::ACTION_DELETED, "Deleted model page is not configured properly.");
+        $action = static::ACTION_DELETED;
+
+        $this->addErrorMsg($action, 'notconfigured', [$action]);
 
         /**
          * default to be false.
@@ -207,20 +260,22 @@ class ActionControl extends \yii\base\Object
      */
     public function getAllowView($params = [])
     {
+        $action = static::ACTION_VIEW;
+
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE) {
-            $this->addError(static::ACTION_VIEW, "Unknown Data.");
+            $this->addErrorMsg($action, 'model-unknown');
 
             return FALSE;
         }
 
         // blacklist
         if ($this->model->isNewRecord) {
-            $this->addError(static::ACTION_VIEW, "Can't view unsaved Data.");
+            $this->addErrorMsg($action, 'model-unsaved', [$action]);
         }
 
         // conclusion
-        return ($this->isError(static::ACTION_VIEW) == FALSE);
+        return ($this->isError($action) == FALSE);
     }
 
     /**
@@ -230,20 +285,22 @@ class ActionControl extends \yii\base\Object
      */
     public function getAllowUpdate($params = [])
     {
+        $action = static::ACTION_UPDATE;
+
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE) {
-            $this->addError(static::ACTION_UPDATE, "Unknown Data.");
+            $this->addErrorMsg($action, 'model-unknown');
 
             return FALSE;
         }
 
         // blacklist
         if ($this->model->isNewRecord) {
-            $this->addError(static::ACTION_UPDATE, "Can't update unsaved Data.");
+            $this->addErrorMsg($action, 'model-unsaved', [$action]);
         }
 
         // conclusion
-        return ($this->isError(static::ACTION_UPDATE) == FALSE);
+        return ($this->isError($action) == FALSE);
     }
 
     /**
@@ -253,26 +310,28 @@ class ActionControl extends \yii\base\Object
      */
     public function getAllowDelete($params = [])
     {
+        $action = static::ACTION_DELETE;
+
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE) {
-            $this->addError(static::ACTION_DELETE, "Unknown Data.");
+            $this->addErrorMsg($action, 'model-unknown');
 
             return FALSE;
         }
 
         // blacklist
         if ($this->model->isNewRecord) {
-            $this->addError(static::ACTION_DELETE, "Can't delete unsaved Data.");
+            $this->addErrorMsg($action, 'model-unsaved', [$action]);
         }
 
         if ($this->model->hasAttribute('recordStatus') && $this->model->hasAttribute('deleted_at')) {
             if ($this->model->getAttribute('recordStatus') == 'deleted') {
-                $this->addError(static::ACTION_DELETE, "Data already (soft) deleted.");
+                $this->addErrorMsg($action, 'model-deleted');
             }
         }
 
         // conclusion
-        return ($this->isError(static::ACTION_DELETE) == FALSE);
+        return ($this->isError($action) == FALSE);
     }
 
     /**
@@ -282,26 +341,28 @@ class ActionControl extends \yii\base\Object
      */
     public function getAllowRestore($params = [])
     {
+        $action = static::ACTION_RESTORE;
+
         // prerequisites
         if (($this->model instanceof ActiveRecord) == FALSE) {
-            $this->addError(static::ACTION_RESTORE, "Unknown Data.");
+            $this->addErrorMsg($action, 'model-unknown');
 
             return FALSE;
         }
 
         // blacklist
         if ($this->model->isNewRecord) {
-            $this->addError(static::ACTION_RESTORE, "Can't restore undeleted Data.");
+            $this->addErrorMsg($action, 'model-unsaved', [$action]);
         }
 
         if ($this->model->hasAttribute('recordStatus') == FALSE OR $this->model->hasAttribute('deleted_at') == FALSE) {
-            $this->addError(static::ACTION_RESTORE, "Data doesn't support soft-delete.");
+            $this->addErrorMsg($action, 'softdelete-unsupported');
         } elseif ($this->model->getAttribute('recordStatus') != 'deleted') {
-            $this->addError(static::ACTION_RESTORE, "Data is not deleted.");
+            $this->addErrorMsg($action, 'model-active');
         }
 
         // conclusion
-        return ($this->isError(static::ACTION_RESTORE) == FALSE);
+        return ($this->isError($action) == FALSE);
     }
 
     /**
