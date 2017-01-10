@@ -910,13 +910,18 @@ class ActionControl extends \yii\base\Object
     }
 
     /**
-     * get model label
+     * attribute name as model label
      *
      * @return string
      */
     public function modelLabel()
     {
-        $alternatives = ['label', 'name', 'title', 'number', 'id'];
+        $alternatives = [
+            'name',
+            'title',
+            'label',
+            'number',
+        ];
 
         foreach ($alternatives as $attribute) {
             if ($this->model->hasAttribute($attribute)) {
@@ -928,7 +933,27 @@ class ActionControl extends \yii\base\Object
             }
         }
 
-        return 'view';
+        $safeAttributes = $this->model->safeAttributes();
+        $primaryKeys = $this->model->primaryKey();
+        $altAttributes = array_diff($safeAttributes, $primaryKeys);
+        $altAttributes = array_filter($altAttributes,
+            function($value) {
+            $skip = ['_id', '_at', '_by'];
+
+            foreach ($skip as $pattern) {
+                if (strpos($value, $pattern) !== false) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        if ($altAttributes) {
+            return array_shift($altAttributes);
+        }
+
+        return '#'.implode('-', $this->model->getPrimaryKey(TRUE));
     }
 
     /**

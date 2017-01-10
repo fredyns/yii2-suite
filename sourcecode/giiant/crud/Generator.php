@@ -94,8 +94,24 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
 
         $safeAttributes = $model->safeAttributes();
         $primaryKeys = $model->primaryKey();
-        $altAttributes = array_diff($safeAttributes, $primaryKeys);
+        $dataAttributes = array_diff($safeAttributes, $primaryKeys);
+        $unindexedAttributes = array_filter($dataAttributes,
+            function($value) {
+            $skip = ['_id', '_at', '_by'];
 
-        return $altAttributes[0];
+            foreach ($skip as $pattern) {
+                if (strpos($value, $pattern) !== false) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        if ($unindexedAttributes) {
+            return array_shift($unindexedAttributes);
+        }
+
+        return $dataAttributes[0];
     }
 }
