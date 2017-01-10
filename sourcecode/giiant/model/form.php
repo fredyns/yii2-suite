@@ -15,7 +15,7 @@ use schmunk42\giiant\helpers\SaveForm;
 $this->registerJs(SaveForm::getSavedFormsJs($generator->getName()), yii\web\View::POS_END);
 $this->registerJs(SaveForm::jsFillForm(), yii\web\View::POS_END);
 echo $form->field($generator, 'savedForm')->dropDownList(
-        SaveForm::getSavedFormsListbox($generator->getName()), ['onchange' => 'fillForm(this.value)']
+    SaveForm::getSavedFormsListbox($generator->getName()), ['onchange' => 'fillForm(this.value)']
 );
 
 echo $form->field($generator, 'tableName');
@@ -40,7 +40,6 @@ echo $form->field($generator, 'queryBaseClass');
 echo $form->field($generator, 'enableI18N')->checkbox();
 echo $form->field($generator, 'singularEntities')->checkbox();
 echo $form->field($generator, 'messageCategory');
-
 ?>
 
 <div class="panel panel-default">

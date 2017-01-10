@@ -88,6 +88,7 @@ class ActionControl extends \yii\base\Object
      * 
      * @param string $name
      * @param string[] $params
+     * @return string
      */
     public function message($name, $params = [])
     {

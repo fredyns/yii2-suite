@@ -21,9 +21,9 @@ use schmunk42\giiant\helpers\SaveForm;
 class Generator extends \schmunk42\giiant\generators\model\Generator
 {
     public $generateRelationsFromCurrentSchema = false;
-    public $useSchemaName                      = false;
-    public $actionNs                           = 'app\actioncontrols';
-    public $formNs                             = 'app\models\form';
+    public $useSchemaName = false;
+    public $actionNs = 'app\actioncontrols';
+    public $formNs = 'app\models\form';
 
     /**
      * {@inheritdoc}
@@ -38,43 +38,41 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
      */
     public function generate()
     {
-        $files     = [];
+        $files = [];
         $relations = $this->generateRelations();
-        $db        = $this->getDbConnection();
+        $db = $this->getDbConnection();
 
         /**
          * fredyns: start
          * preparing additional variables
          */
         $this->actionNs = str_replace('models', 'actioncontrols', $this->ns);
-        $this->formNs   = $this->ns.'\form';
+        $this->formNs = $this->ns.'\form';
 
         /**
          * fredyns: end
          */
-        foreach ($this->getTableNames() as $tableName)
-        {
+        foreach ($this->getTableNames() as $tableName) {
             list($relations, $translations) = array_values($this->extractTranslations($tableName, $relations));
 
-            $className      = $this->generateClassName($tableName);
+            $className = php_sapi_name() === 'cli' ? $this->generateClassName($tableName) : $this->modelClass;
             $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($className) : false;
-            $tableSchema    = $db->getTableSchema($tableName);
+            $tableSchema = $db->getTableSchema($tableName);
 
             $params = [
-                'tableName'      => $tableName,
-                'className'      => $className,
+                'tableName' => $tableName,
+                'className' => $className,
                 'queryClassName' => $queryClassName,
-                'tableSchema'    => $tableSchema,
-                'labels'         => $this->generateLabels($tableSchema),
-                'hints'          => $this->generateHints($tableSchema),
-                'rules'          => $this->generateRules($tableSchema),
-                'relations'      => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                'ns'             => $this->ns,
-                'enum'           => $this->getEnum($tableSchema->columns),
+                'tableSchema' => $tableSchema,
+                'labels' => $this->generateLabels($tableSchema),
+                'hints' => $this->generateHints($tableSchema),
+                'rules' => $this->generateRules($tableSchema),
+                'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                'ns' => $this->ns,
+                'enum' => $this->getEnum($tableSchema->columns),
             ];
 
-            if (!empty($translations))
-            {
+            if (!empty($translations)) {
                 $params['translation'] = $translations;
             }
 
@@ -82,15 +80,14 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
             $params['timestamp'] = $this->generateTimestamp($tableSchema);
 
             $files[] = new CodeFile(
-                Yii::getAlias(
-                    '@'.str_replace('\\', '/', $this->ns)
-                ).'/base/'.$className.$this->baseClassSuffix.'.php', $this->render('model.php', $params)
+                Yii::getAlias('@'.str_replace('\\', '/', $this->ns))
+                .'/base/'.$className.$this->baseClassSuffix.'.php'
+                , $this->render('model.php', $params)
             );
 
             $modelClassFile = Yii::getAlias('@'.str_replace('\\', '/', $this->ns)).'/'.$className.'.php';
 
-            if ($this->generateModelClass || !is_file($modelClassFile))
-            {
+            if ($this->generateModelClass || !is_file($modelClassFile)) {
                 $files[] = new CodeFile(
                     $modelClassFile, $this->render('model-extended.php', $params)
                 );
@@ -118,15 +115,13 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
                  */
             }
 
-            if ($queryClassName)
-            {
+            if ($queryClassName) {
                 $queryClassFile = Yii::getAlias(
                         '@'.str_replace('\\', '/', $this->queryNs)
                     ).'/'.$queryClassName.'.php';
-                if ($this->generateModelClass || !is_file($queryClassFile))
-                {
-                    $params  = [
-                        'className'      => $queryClassName,
+                if ($this->generateModelClass || !is_file($queryClassFile)) {
+                    $params = [
+                        'className' => $queryClassName,
                         'modelClassName' => $className,
                     ];
                     $files[] = new CodeFile(
@@ -138,45 +133,16 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
             /*
              * create gii/[name]GiiantModel.json with actual form data
              */
-            $suffix       = str_replace(' ', '', $this->getName());
-            $formDataDir  = Yii::getAlias('@'.str_replace('\\', '/', $this->ns));
+            $suffix = str_replace(' ', '', $this->getName());
+            $formDataDir = Yii::getAlias('@'.str_replace('\\', '/', $this->ns));
             $formDataFile = StringHelper::dirname($formDataDir)
                 .'/gii'
                 .'/'.$tableName.$suffix.'.json';
 
             $formData = json_encode(SaveForm::getFormAttributesValues($this, $this->formAttributes()));
-            $files[]  = new CodeFile($formDataFile, $formData);
+            $files[] = new CodeFile($formDataFile, $formData);
         }
 
         return $files;
     }
-
-    protected function generateRelations()
-    {
-        return parent::generateRelations();
-
-        // inject namespace
-        $ns = "\\{$this->ns}\\";
-        foreach ($relations as $model => $relInfo)
-        {
-            foreach ($relInfo as $relName => $relData)
-            {
-
-                // removed duplicated relations, eg. klientai, klientai0
-                if ($this->removeDuplicateRelations && is_numeric(substr($relName, -1)))
-                {
-                    unset($relations[$model][$relName]);
-                    continue;
-                }
-
-                $relations[$model][$relName][0] = preg_replace(
-                    '/(has[A-Za-z0-9]+\()([a-zA-Z0-9]+::)/', '$1__NS__$2', $relations[$model][$relName][0]
-                );
-                $relations[$model][$relName][0] = str_replace('__NS__', $ns, $relations[$model][$relName][0]);
-            }
-        }
-
-        return $relations;
-    }
-
 }
