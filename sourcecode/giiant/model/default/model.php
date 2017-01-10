@@ -57,8 +57,7 @@ abstract class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass,
         if ($traits) {
             echo "use {$traits};";
         }
-    ?>
-    <?php if(!empty($enum)): ?>
+?><?php if(!empty($enum)): ?>
 
     /**
      * ENUM field values
@@ -70,6 +69,7 @@ abstract class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass,
         }
     }
 ?>
+
     var $enum_labels = false;
     <?php endif; ?>
 
@@ -165,7 +165,6 @@ foreach ($labels as $name => $label){
         );
     }
     <?php endif; ?>
-
     <?php foreach ($relations as $name => $relation): ?>
 
     /**
@@ -176,7 +175,6 @@ foreach ($labels as $name => $label){
         <?= $relation[0] . "\n" ?>
     }
     <?php endforeach; ?>
-
     <?php if (isset($translation)): ?>
     /**
      * @return \yii\db\ActiveQuery
@@ -186,7 +184,6 @@ foreach ($labels as $name => $label){
         <?= $translation['code'] . "\n"?>
     }
     <?php endif; ?>
-
     <?php if ($queryClassName): ?>
     <?php
     $queryClassFullName = ($generator->ns .'\\base' === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
@@ -201,7 +198,6 @@ foreach ($labels as $name => $label){
         return new <?= $queryClassFullName ?>(get_called_class());
     }
     <?php endif; ?>
-
     <?php foreach($enum as $column_name => $column_data): ?>
 
     /**
@@ -209,10 +205,11 @@ foreach ($labels as $name => $label){
      * @param string $value
      * @return string
      */
-    public static function <?php echo $column_data['func_get_label_name']?>($value){
+    public static function <?php echo $column_data['func_get_label_name']?>($value)
+    {
         $labels = self::<?php echo $column_data['func_opts_name']?>();
 
-        if(isset($labels[$value])){
+        if(isset($labels[$value])) {
             return $labels[$value];
         }
 

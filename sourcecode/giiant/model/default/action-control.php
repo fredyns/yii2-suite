@@ -62,8 +62,7 @@ class <?= $className ?>ActControl extends \fredyns\suite\libraries\ActionControl
     public function breadcrumbLabels()
     {
         return ArrayHelper::merge(
-            parent::breadcrumbLabels(),
-            [
+            parent::breadcrumbLabels(), [
                 'index' => '<?= $className ?>',
             ]
         );
@@ -72,11 +71,34 @@ class <?= $className ?>ActControl extends \fredyns\suite\libraries\ActionControl
     /**
      * @inheritdoc
      */
+    public function modelLabel()
+    {
+        return parent::modelLabel();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function messages()
+    {
+        return [
+            'forbidden' => "%s is not allowed.",
+            'notconfigured' => "%s is not configured properly.",
+            'model-unknown' => "Unknown Data.",
+            'model-unsaved' => "Can't %s unsaved data.",
+            'model-deleted' => "Data already (soft) deleted.",
+            'model-active' => "Data is not deleted.",
+            'softdelete-unsupported' => "Data doesn't support soft-delete.",
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function actionPersistentModel()
     {
         return ArrayHelper::merge(
-                parent::actionPersistentModel(),
-                [
+                parent::actionPersistentModel(), [
                     #  additional action name
                 ]
         );
@@ -88,8 +110,7 @@ class <?= $className ?>ActControl extends \fredyns\suite\libraries\ActionControl
     public function actionUnspecifiedModel()
     {
         return ArrayHelper::merge(
-                parent::actionUnspecifiedModel(),
-                [
+                parent::actionUnspecifiedModel(), [
                     # additional action name
                 ]
         );
