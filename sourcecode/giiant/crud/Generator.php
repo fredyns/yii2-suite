@@ -84,8 +84,6 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             'title',
             'label',
             'number',
-            'user_id',
-            'localtime',
         ];
 
         foreach ($alternatives as $attribute) {
@@ -94,6 +92,10 @@ class Generator extends \schmunk42\giiant\generators\crud\Generator
             }
         }
 
-        return $model->primaryKey()[0];
+        $safeAttributes = $model->safeAttributes();
+        $primaryKeys = $model->primaryKey();
+        $altAttributes = array_diff($safeAttributes, $primaryKeys);
+
+        return $altAttributes[0];
     }
 }
