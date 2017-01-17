@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "change ownership as yours."
+sudo echo "change ownership as yours."
 sudo chown -R $USER ..
 
 echo "change group."
