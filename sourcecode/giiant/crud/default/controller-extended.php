@@ -7,6 +7,7 @@ echo "<?php\n";
 
 namespace <?= \yii\helpers\StringHelper::dirname(ltrim($generator->controllerClass, '\\')) ?>;
 
+use yii\filters\VerbFilter;
 use fredyns\suite\filters\AdminLTELayout;
 
 /**
@@ -22,6 +23,12 @@ class <?= $controllerClassName ?> extends <?= (isset($generator->controllerNs) ?
         return [
             'layout' => [
                 'class' => AdminLTELayout::className(),
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
             ],
         ];
     }
