@@ -110,12 +110,18 @@ trait ModelBlame
      *
      * @return User
      */
-    public function getBlamedUser($attribute, $alias)
+    public function getBlamedUser($attribute, $alias = null)
     {
         $modelName = $this->modelUser();
 
         if ($this->hasAttribute($attribute) && $modelName) {
-            return $this->hasOne($modelName, ['id' => $attribute])->alias($alias);
+            $activeQuery = $this->hasOne($modelName, ['id' => $attribute]);
+
+            if ($alias) {
+                $activeQuery->alias($alias);
+            }
+
+            return $activeQuery;
         }
 
         return NULL;
@@ -126,12 +132,18 @@ trait ModelBlame
      *
      * @return Profile
      */
-    public function getBlamedProfile($attribute, $alias)
+    public function getBlamedProfile($attribute, $alias = null)
     {
         $modelName = $this->modelProfile();
 
         if ($this->hasAttribute($attribute) && $modelName) {
-            return $this->hasOne($modelName, ['user_id' => $attribute])->alias($alias);
+            $activeQuery = $this->hasOne($modelName, ['user_id' => $attribute]);
+
+            if ($alias) {
+                $activeQuery->alias($alias);
+            }
+
+            return $activeQuery;
         }
 
         return NULL;
