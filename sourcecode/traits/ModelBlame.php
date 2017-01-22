@@ -165,7 +165,7 @@ trait ModelBlame
      */
     public function getDeletedBy()
     {
-        return $this->getBlamedProfile('deleted_by', 'DeletedBy');
+        return $this->getBlamedProfile('deleted_by', 'deletedBy');
     }
 
     /**
@@ -175,7 +175,7 @@ trait ModelBlame
      */
     public function getCreatedByProfile()
     {
-        return $this->getBlamedProfile('created_by', 'CreatedByProfile');
+        return $this->getBlamedProfile('created_by', 'createdByProfile');
     }
 
     /**
@@ -185,7 +185,7 @@ trait ModelBlame
      */
     public function getUpdatedByProfile()
     {
-        return $this->getBlamedProfile('updated_by', 'UpdatedByProfile');
+        return $this->getBlamedProfile('updated_by', 'updatedByProfile');
     }
 
     /**
@@ -195,7 +195,7 @@ trait ModelBlame
      */
     public function getDeletedByProfile()
     {
-        return $this->getBlamedProfile('deleted_by', 'DeletedByProfile');
+        return $this->getBlamedProfile('deleted_by', 'deletedByProfile');
     }
 
     /**
@@ -205,7 +205,7 @@ trait ModelBlame
      */
     public function getCreatedByUser()
     {
-        return $this->getBlamedUser('created_by', 'CreatedByUser');
+        return $this->getBlamedUser('created_by', 'createdByUser');
     }
 
     /**
@@ -215,7 +215,7 @@ trait ModelBlame
      */
     public function getUpdatedByUser()
     {
-        return $this->getBlamedUser('updated_by', 'UpdatedByUser');
+        return $this->getBlamedUser('updated_by', 'updatedByUser');
     }
 
     /**
@@ -225,6 +225,6 @@ trait ModelBlame
      */
     public function getDeletedByUser()
     {
-        return $this->getBlamedUser('deleted_by', 'DeletedByUser');
+        return $this->getBlamedUser('deleted_by', 'deletedByUser');
     }
 }
