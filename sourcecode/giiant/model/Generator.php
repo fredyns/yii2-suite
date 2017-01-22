@@ -55,7 +55,7 @@ class Generator extends \schmunk42\giiant\generators\model\Generator
         foreach ($this->getTableNames() as $tableName) {
             list($relations, $translations) = array_values($this->extractTranslations($tableName, $relations));
 
-            $className = php_sapi_name() === 'cli' ? $this->generateClassName($tableName) : $this->modelClass;
+            $className = (php_sapi_name() === 'cli' OR empty($this->modelClass)) ? $this->generateClassName($tableName) : $this->modelClass;
             $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($className) : false;
             $tableSchema = $db->getTableSchema($tableName);
 
