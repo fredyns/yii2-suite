@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\StringHelper;
 /**
  * This is the template for generating the model class of a specified table.
  *
@@ -37,6 +38,13 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
 {
 
     use <?= implode(', ', $modelTrait) ?>;
+<?php if (!empty($relations)): ?>    
+<?php foreach ($relations as $name => $relation): ?>
+<?php if (!$relation[2] && $name != StringHelper::basename($relation[1])): ?>
+    const ALIAS_<?= strtoupper($name) ?> = '<?= lcfirst($name) ?>';<?= "\n" ?>
+<?php endif; ?>
+<?php endforeach; ?>
+<?php endif; ?>
 
     /**
      * @inheritdoc
@@ -63,4 +71,18 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
              ]
         );
     }
+<?php if (!empty($relations)): ?>
+<?php foreach ($relations as $name => $relation): ?>
+<?php if (!$relation[2] && $name != StringHelper::basename($relation[1])): ?>
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function get<?= $name ?>()
+    {
+        return parent::get<?= $name ?>()->alias(static::ALIAS_<?= strtoupper($name) ?>);
+    }
+<?php endif; ?>
+<?php endforeach; ?>
+<?php endif; ?>
 }
