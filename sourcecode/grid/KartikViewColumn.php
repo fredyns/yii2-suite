@@ -30,7 +30,7 @@ class KartikViewColumn extends \kartik\grid\DataColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-        $label = parent::renderDataCellContent();
+        $label = parent::renderDataCellContent($model, $key, $index);
         $actionControl = Yii::createObject([
                 'class' => $this->actionControl,
                 'model' => $model,
