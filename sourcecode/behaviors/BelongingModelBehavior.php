@@ -12,7 +12,7 @@ use yii\db\BaseActiveRecord;
 /**
  * Handling related attribute and insert as new model
  * sample usage:
- * 
+ *
  * ```php
  * use fredyns\suite\behaviors\BelongingModelBehavior;
  *
@@ -120,7 +120,7 @@ class BelongingModelBehavior extends AttributeBehavior
                 call_user_func($this->modelHook, $model);
             }
 
-            return $model->save(FALSE) ? $model->id : 0;
+            return $model->save(FALSE) ? $model->id : null;
         }
     }
 }
