@@ -183,7 +183,7 @@ EOS;
             [
                 'content' => \$this->blocks['$name'],
                 'label' => '<small>$label <span class="badge badge-default">'
-                    .count(\$model->get{$name}()->asArray()->all())
+                    .\$model->get{$name}()->count()
                     .'</span></small>',
                 'active' => false,
             ],\n
