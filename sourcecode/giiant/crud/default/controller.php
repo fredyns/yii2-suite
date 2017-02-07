@@ -302,7 +302,7 @@ if ($traits) {
      * Finds the <?= $modelClass ?> form model for modification.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * <?= implode("\n\t * ", $actionParamComments)."\n" ?>
-     * @return <?= $modelClass ?> the loaded model
+     * @return <?= $modelClass ?>Form the loaded model
      * @throws HttpException if the model cannot be found
      */
     protected function findForm(<?= $actionParams ?>)
