@@ -119,22 +119,6 @@ class <?= $className ?>ActControl extends \fredyns\suite\libraries\ActionControl
     /**
      * @inheritdoc
      */
-    public function messages()
-    {
-        return [
-            'forbidden' => "%s is not allowed.",
-            'notconfigured' => "%s is not configured properly.",
-            'model-unknown' => "Unknown Data.",
-            'model-unsaved' => "Can't %s unsaved data.",
-            'model-deleted' => "Data already (soft) deleted.",
-            'model-active' => "Data is not deleted.",
-            'softdelete-unsupported' => "Data doesn't support soft-delete.",
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function actions()
     {
         return ArrayHelper::merge(
