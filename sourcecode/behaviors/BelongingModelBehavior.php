@@ -113,7 +113,7 @@ class BelongingModelBehavior extends AttributeBehavior
             ]);
 
             foreach ($this->otherAttributes as $modelAttribute => $sourceAttribute) {
-                $model->$modelAttribute = ArrayHelper::getValue($this->owner, $this->$sourceAttribute);
+                $model->$modelAttribute = ArrayHelper::getValue($this->owner, $sourceAttribute);
             }
 
             if ($this->modelHook instanceof \Closure) {
