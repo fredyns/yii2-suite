@@ -21,10 +21,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use cornernote\returnurl\ReturnUrl;
 
-/**
- * @var yii\web\View $this
- * @var <?= ltrim($generator->modelClass, '\\') ?> $model
- */
+/* @var $this yii\web\View */
+/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
 
 $this->title = $actionControl->breadcrumbLabel('create');
 $this->params['breadcrumbs'][] = $actionControl->breadcrumbItem('index');

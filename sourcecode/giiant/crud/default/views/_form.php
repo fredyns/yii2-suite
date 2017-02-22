@@ -29,11 +29,9 @@ use yii\helpers\StringHelper;
 use cornernote\returnurl\ReturnUrl;
 use dmstr\bootstrap\Tabs;
 
-/**
- * @var yii\web\View $this
- * @var <?= ltrim($generator->modelClass, '\\') ?> $model
- * @var yii\widgets\ActiveForm $form
- */
+/* @var $this yii\web\View */
+/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
+/* @var $form ActiveForm */
 ?>
 
 <div class="<?= \yii\helpers\Inflector::camel2id(

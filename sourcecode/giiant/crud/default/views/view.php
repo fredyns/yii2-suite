@@ -39,10 +39,9 @@ use fredyns\suite\helpers\ActiveUser;
 use fredyns\suite\widgets\DetailView;
 use kartik\grid\GridView;
 
-/**
- * @var yii\web\View $this
- * @var <?= ltrim($generator->modelClass, '\\') ?> $model
- */
+/* @var $this yii\web\View */
+/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
+
 $copyParams = $model->attributes;
 
 $this->title = $actionControl->breadcrumbLabel('index')." "

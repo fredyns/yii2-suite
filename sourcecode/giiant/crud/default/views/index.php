@@ -39,13 +39,11 @@ use yii\helpers\Url;
 use <?= $generator->indexWidgetType === 'grid' ? $generator->indexGridClass : 'yii\\widgets\\ListView' ?>;
 use cornernote\returnurl\ReturnUrl;
 
-/**
- * @var yii\web\View $this
- * @var yii\data\ActiveDataProvider $dataProvider
+/* @var $this yii\web\View */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 <?php if ($generator->searchModelClass !== ''): ?>
- * @var <?= ltrim($generator->searchModelClass, '\\') ?> $searchModel
+/* @var $searchModel <?= ltrim($generator->searchModelClass, '\\') ?> */
 <?php endif; ?>
- */
 
 $this->title = Yii::t(<?= "'{$generator->modelMessageCategory}', '{$modelName}'" ?>);
 $this->params['breadcrumbs'][] = $this->title;

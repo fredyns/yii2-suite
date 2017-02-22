@@ -14,11 +14,9 @@ echo "<?php\n";
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/**
- * @var yii\web\View $this
- * @var <?= ltrim($generator->searchModelClass, '\\') ?> $model
- * @var yii\widgets\ActiveForm $form
- */
+/* @var $this yii\web\View */
+/* @var $model <?= ltrim($generator->searchModelClass, '\\') ?> */
+/* @var $form ActiveForm */
 ?>
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass), '-', true) ?>-search">
