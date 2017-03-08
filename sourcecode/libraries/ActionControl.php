@@ -67,7 +67,7 @@ class ActionControl extends \yii\base\Object
 
     /**
      * message storage
-     * 
+     *
      * @return string[]
      */
     public function messages()
@@ -85,7 +85,7 @@ class ActionControl extends \yii\base\Object
 
     /**
      * format message
-     * 
+     *
      * @param string $name
      * @param string[] $params
      * @return string
@@ -116,7 +116,7 @@ class ActionControl extends \yii\base\Object
 
     /**
      * add formated error message
-     * 
+     *
      * @param string $action
      * @param string $msg
      * @param string[] $params
@@ -933,6 +933,14 @@ class ActionControl extends \yii\base\Object
             }
         }
 
+        foreach ($alternatives as $attribute) {
+            $method = 'get'.ucfirst($attribute);
+
+            if ($this->model->hasMethod($method)) {
+                return $this->model->$method();
+            }
+        }
+
         $safeAttributes = $this->model->safeAttributes();
         $primaryKeys = $this->model->primaryKey();
         $altAttributes = array_diff($safeAttributes, $primaryKeys);
@@ -950,7 +958,9 @@ class ActionControl extends \yii\base\Object
         });
 
         if ($altAttributes) {
-            return array_shift($altAttributes);
+            $attribute = array_shift($altAttributes);
+
+            return $this->model->getAttribute($attribute);
         }
 
         return '#'.implode('-', $this->model->getPrimaryKey(TRUE));
