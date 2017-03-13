@@ -34,19 +34,7 @@ use yii\db\BaseActiveRecord;
 class BelongingModelBehavior extends AttributeBehavior
 {
     /**
-     * @var string model class name which related
-     */
-    public $modelClass;
-
-    /**
-     * function to call before saving
-     *
-     * @var callable
-     */
-    public $modelHook;
-
-    /**
-     * @var string related attribute which belong to another model
+     * @var string attribute which referenced to another model
      */
     public $relatedAttribute;
 
@@ -56,9 +44,33 @@ class BelongingModelBehavior extends AttributeBehavior
     public $valueAttribute = 'name';
 
     /**
-     * @var string[] other attributes to complements model
+     * @var string model class name which related
+     */
+    public $modelClass;
+
+    /**
+     * @var array related model attributes
+     */
+    public $modelAttributes = [];
+
+    /**
+     * @var string[] attibut list to copy from current model (form) to referenced model
+     */
+    public $copyAttributes = [];
+
+    /**
+     * @var string[] same with $copyAttributes. just to maintain backward compatibility
      */
     public $otherAttributes = [];
+
+    /**
+     * @var callable function to call before saving
+     */
+    public $modelHook;
+
+    /**
+     * @var string attribute value
+     */
     public $value;
 
     /**
@@ -68,10 +80,6 @@ class BelongingModelBehavior extends AttributeBehavior
     {
         parent::init();
 
-        if (empty($this->modelClass)) {
-            throw new InvalidConfigException("Model class behavior must be set.");
-        }
-
         if (empty($this->relatedAttribute)) {
             throw new InvalidConfigException("Related attribute behavior must be set.");
         }
@@ -80,8 +88,20 @@ class BelongingModelBehavior extends AttributeBehavior
             throw new InvalidConfigException("Value attribute behavior must be set.");
         }
 
+        if (empty($this->modelClass)) {
+            throw new InvalidConfigException("Referenced Model class must be set.");
+        }
+
+        if (is_array($this->modelAttributes) == false) {
+            throw new InvalidConfigException("Model attributes must be an array.");
+        }
+
+        if (is_array($this->copyAttributes) == false) {
+            throw new InvalidConfigException("Attributes list to copy must be an array.");
+        }
+
         if (is_array($this->otherAttributes) == false) {
-            throw new InvalidConfigException("Related attributes must be an array.");
+            throw new InvalidConfigException("Other attributes list to copy must be an array.");
         }
 
         if (empty($this->attributes)) {
@@ -107,14 +127,19 @@ class BelongingModelBehavior extends AttributeBehavior
         } elseif (empty($value)) {
             return NULL;
         } else {
-            $model = Yii::createObject([
-                    'class' => $this->modelClass,
-                    $this->valueAttribute => $value,
-            ]);
+            $options = $this->modelAttributes;
+            $options['class'] = $this->modelClass;
+            $options[$this->valueAttribute] = $value;
+
+            foreach ($this->copyAttributes as $modelAttribute => $sourceAttribute) {
+                $options[$modelAttribute] = ArrayHelper::getValue($this->owner, $sourceAttribute);
+            }
 
             foreach ($this->otherAttributes as $modelAttribute => $sourceAttribute) {
-                $model->$modelAttribute = ArrayHelper::getValue($this->owner, $sourceAttribute);
+                $options[$modelAttribute] = ArrayHelper::getValue($this->owner, $sourceAttribute);
             }
+
+            $model = Yii::createObject($options);
 
             if ($this->modelHook instanceof \Closure) {
                 call_user_func($this->modelHook, $model);
