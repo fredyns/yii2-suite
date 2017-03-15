@@ -621,7 +621,7 @@ class ActionControl extends \yii\base\Object
             static::ACTION_VIEW => [
                 'label' => 'View',
                 'url' => $this->urlView,
-                'icon' => Icon::show('zoom-in'),
+                'icon' => Icon::show('eye'),
                 'linkOptions' => [
                     'title' => 'click to view this data',
                     'aria-label' => 'View',
