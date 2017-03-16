@@ -36,7 +36,7 @@ trait ModelTool
 
             $value = ArrayHelper::getValue($source, $sourceAttribute);
 
-            $this->setAttribute($targetAttribute, $value);
+            $this->$targetAttribute = $value;
         }
     }
 
