@@ -974,7 +974,7 @@ class ActionControl extends \yii\base\Object
      */
     public function getLinkTo($options = [])
     {
-        if (is_scalar($options)) {
+        if ($options && is_scalar($options)) {
             $options = ['label' => $options];
         } elseif (is_array($options) == FALSE) {
             $options = [];
